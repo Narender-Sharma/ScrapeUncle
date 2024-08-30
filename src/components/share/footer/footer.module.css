@@ -1,0 +1,14 @@
+.footer{background: var(--191919);padding: 70px 0 20px }
+.footer1{padding: 10px 0 20px }
+.footerContainer{display: grid;grid-template-columns: repeat(4,minmax(25%,1fr));}
+.footerLogo{flex-shrink: 0}
+.address{padding: 15px;border:solid 1px #BEBEBE; border-radius: 9px;display: flex;margin-bottom: 20px;grid-gap: 20px;}
+.copyRight{display: flex;justify-content: space-between;border-top: solid 1px #fff;margin:20px auto 0;padding-top: 15px;}
+.copyRight1{border-top: none;}
+.termsAndCondition{display: flex;grid-gap: 10px;}
+@media screen and (max-width:768px) {
+    .copyRight1{flex-direction: column;justify-content: center;grid-gap: 10px;}
+    .copyRight1 p{text-align: center;}
+    .footer{padding: 1px 0 20px}
+    .termsAndCondition{justify-content: center;}
+}
