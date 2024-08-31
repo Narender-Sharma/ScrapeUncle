@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { BannerEditModal } from '../share';
+import React, { useState,useEffect  } from 'react'
+import { BannerEditModal,Alert } from '../share';
 import { DashboardTop } from './../dashboardTop';
 import {getAddBanner,bannerUpdate,addNewBanner} from './../../services/addBanner';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
@@ -10,29 +10,44 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
   const [payload, setPayload] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [addLebal, setaddLebal] = useState(true);
+
   let message='';
   let showClass='';
   const userAdminLogin = getItemFromCookie('userAdminLogin');
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      // After 3 seconds set the show value to false
+      setShowAlert(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, [showAlert]);
   const editBannerID = (id)=>{
     setEditBanner(true);
     let currentbanner = allBanner.filter((item)=>item.id === id);
     setPayload(currentbanner[0]);
   }
+  
   const addCityFunction = ()=>{
+    setPayload('')
     setEditBanner(true);
     }
     const addBanner = async ()=>{
         if(payload.name !=='' && payload.is_active !==''){
             setaddLebal(true);
-            let data = await addNewBanner(userAdminLogin,payload);
-            if(data.success === 1){
+            // let data =''
+            const response = await addNewBanner(userAdminLogin,payload);
+            if(response.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Add Banner.';
                 showClass= 'alert-success fade show';
                 setShowAlert(true);
-                
+                setEditBanner(!editBanner);
                 setBannerUpd(!bannerUpd);
-            }if(data.success === '0'){
+            }if(response.success === '0'){
                 setShowAlert(true);
+                setEditBanner(!editBanner);
                 message = message.sqlMessage;
                 
             }
@@ -49,8 +64,10 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
                 setShowAlert(true);
                 setPayload('');
                 setBannerUpd(!bannerUpd);
+                setEditBanner(!editBanner);
             }if(data.success === '0'){
                 setShowAlert(true);
+                setEditBanner(!editBanner);
                 message = message.sqlMessage;
                 showClass= 'alert-danger fade show';
                 
@@ -91,6 +108,7 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
+                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
                                             <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addCityFunction()}>Add New Banner</button>
@@ -109,7 +127,7 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
                                                 {allBanner.map((item,index)=>(
                                                     <tr key={index}>
                                                         <td>{item.name}</td>
-                                                        <td><img src="assets/images/users/user-2.jpg" alt="" className="thumb-sm rounded me-2"/>{item.url}</td>
+                                                        <td><img src={`${item.url != ''?`https://treestructure.onrender.com/image/`+item.image:'assets/images/users/user-2.jpg'}`} alt="" className="thumb-sm rounded me-2"/>{item.url}</td>
                                                         <td>{item.is_active === 1?'show':'Hide'}</td>
                                                         <td>
                                                           <a href='javascript:void(0)' onClick={()=>editBannerID(item.id)}><i className="las la-pen text-secondary font-16"></i></a>

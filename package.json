@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "bootstrap": "5.2.1",
+    "browser-image-compression": "^2.0.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "js-base64": "^3.7.7",

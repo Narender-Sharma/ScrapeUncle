@@ -28,6 +28,7 @@ const addNewBanner = async(token,data) => {
     
        return response.data;
     } catch (err) {
+        console.log(err, 'sdfs')
         console.error('error in addNewBanner APi ', err);
     }
 }

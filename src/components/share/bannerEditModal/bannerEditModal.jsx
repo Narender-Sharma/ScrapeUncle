@@ -1,32 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import Validation from '../../../form/Validation';
-import axios from "axios";
+import imageCompression from "browser-image-compression";
 export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction}) => {
     let editBanner = {
         name:'',
-        is_active:'',
+        is_active:true,
         url:'',
         image:'',
     }
     const [form, setForm] = useState(payload?payload:editBanner)
     const [selectedImage, setSelectedImage] = useState(payload.image != ''?payload.image:'');
+    const fileUploadRef = useRef();
     const HandleChange = (e)=>{
        const {name,value,files} = e.target;
-       let isValid = isAllowed(value, name);
-       if (isValid) {
-        setForm({ ...form, [name]: value });
-        }
+       if(name === 'image' && e.target.files){
+        const uploadedFile = fileUploadRef.current.files[0];
+        const cachedURL = URL.createObjectURL(uploadedFile);
+        const formData = new FormData();
+        formData.append("file", uploadedFile);
+        formData.append("name", form.name);
+        formData.append("url", form.url);
+        formData.append("is_active", form.is_active);
+        console.log(formData, 'formData')
+        setSelectedImage(cachedURL)
+        setForm(formData);
+       }else{
+            let isValid = isAllowed(value, name);
+            if (isValid) {
+                setForm({ ...form, [name]: value });
+            }
+       }
     }
-    const [file, setFile] = useState(null);
-  const [directory, setDirectory] = useState("");
 
-  const handleFileUpload = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleDirectoryChange = (event) => {
-    setDirectory(event.target.value);
-  };
     const isAllowed = (value, type) => {
         switch (type){
           case 'name':
@@ -38,7 +43,8 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
             return  true;
         }
       }
-    setPayload(form)
+    setPayload(form);
+    console.log(form, 'form')
   return (
     <>
     <div className="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
@@ -61,7 +67,7 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
                                 </div>
                                 <div className="col-md-12">
                                     <label className="form-label mt-2 mt-md-0" htmlFor="LeadEmail">Image URL</label>
-                                    <input type="text" className="form-control" id="LeadEmail" name='url' disabled={true} value={form.url} required="" onChange={(e)=>HandleChange(e)}/>
+                                    <input type="text" className="form-control" id="LeadEmail" name='url' disabled={false} value={form.url} required="" onChange={(e)=>HandleChange(e)}/>
                                 </div>
                                 <div className="col-md-12">
                                     <label className="form-label mt-2" htmlFor="PhoneNo">Banner Status</label><br/>
@@ -77,13 +83,7 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
                                 <div className="col-md-12">
                                     <label htmlFor="status-select" className="form-label mt-2">Upload Image</label>
                                     <div className="input-group mb-3">
-                                        <input type="file" className="form-control"  name='NewUrl' id="inputGroupFile02" onChange={({ target }) => {
-                                            if (target.files) {
-                                            const file = target.files[0];
-                                            setSelectedImage(URL.createObjectURL(file));
-                                            setForm({...form, image:file});
-                                            }
-                                        }}/>
+                                        <input type="file" className="form-control"  name='image' id="inputGroupFile02" ref={fileUploadRef} onChange={(e)=>HandleChange(e)}/>
                                     </div>
                                 </div> 
                             </div>

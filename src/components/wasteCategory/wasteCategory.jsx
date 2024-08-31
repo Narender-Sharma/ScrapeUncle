@@ -1,78 +1,17 @@
-import React, { useState,useEffect } from 'react'
-import {EditCity,Alert} from '../share'
-import { addNewCity,cityUpdate } from '../../services/cityMaster';
+import React, {useEffect, useState } from 'react'
 import { DashboardTop } from './../dashboardTop';
-import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
+import { Alert} from '../share'
+export const WasteCategoryCom = ({setWasteCategoryUpd,wasteCategory}) => {
+  const [showAlert, setShowAlert] = useState(false);
+  const addWasteCategory = ()=>{
 
-export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
-    const [cityModel, setCityModel] = useState(false);
-    const [payload, setPayload] = useState('');
-    const [showAlert, setShowAlert] = useState(false);
-    const [addLebal, setaddLebal] = useState(true);
-    let message='';
-    let showClass='';
-    const userAdminLogin = getItemFromCookie('userAdminLogin');
-    useEffect(() => {
-        const timeId = setTimeout(() => {
-          // After 3 seconds set the show value to false
-          setShowAlert(false)
-        }, 3000)
+  }
+  const editWasteCategory = ()=>{
     
-        return () => {
-          clearTimeout(timeId)
-        }
-      }, [showAlert]);
-    const editCity=(id)=>{
-        setCityModel(true);
-        setaddLebal(false); 
-        let currentCity = cityList.filter((item)=>item.id === id);
-        setPayload(currentCity[0]);
-        setCityUpd(!cityUpd);
-    }
-    const addCity = async ()=>{
-        if(payload.name !=='' && payload.is_active !==''){
-            let data = await addNewCity(userAdminLogin,payload);
-            if(data.success === 1){
-                message = '<strong>Well done!</strong> 👍 You successfully Add City.';
-                showClass= 'alert-success fade show';
-                setShowAlert(true);
-                setCityModel(false)
-                setCityUpd(!cityUpd);
-            }if(data.success === '0'){
-                setShowAlert(true);
-                message = message.sqlMessage;
-                setCityModel(false)
-            }
-            
-        }
-    }
-    const upDateCity = async()=>{
-        if(payload.name !=='' && payload.is_active !==''){
-            let data = await cityUpdate(userAdminLogin,payload);
-            if(data.success === 1){
-                message = '<strong>Well done!</strong> 👍 You successfully Update City.';
-                showClass= 'alert-success fade show';
-                setShowAlert(true);
-                setCityModel(false);
-                setPayload('');
-                setCityUpd(!cityUpd);
-            }if(data.success === '0'){
-                setShowAlert(true);
-                message = message.sqlMessage;
-                showClass= 'alert-danger fade show';
-                setCityModel(false)
-            }
-        }
-    }
-    const addCityFunction = ()=>{
-        setCityModel(!cityModel);
-        setPayload('');
-        setaddLebal(true);
-    }
+  }
   return (
     <>
-        {cityModel  && <EditCity addLebal={addLebal} upDateCity={upDateCity} payload={payload} addCity={addCity} setPayload={setPayload} setEditBanner={setCityModel}/>}    
-        <div className="page-wrapper">
+      <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
                     <div className="row">
@@ -80,31 +19,37 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
                             <div className="page-title-box">
                                 <div className="float-end">
                                     <ol className="breadcrumb">
-                                        <li className="breadcrumb-item"><a href="#">Dashboard</a>
+                                        <li className="breadcrumb-item"><a href="#">Metrica</a>
                                         </li>
-                                        <li className="breadcrumb-item active">City</li>
+                                        <li className="breadcrumb-item"><a href="#">Project</a>
+                                        </li>
+                                        <li className="breadcrumb-item active">Dashboard</li>
                                     </ol>
                                 </div>
-                                <h4 className="page-title">City</h4>
+                                <h4 className="page-title">Dashboard</h4>
                             </div>
                         </div>
                     </div>
-                    <DashboardTop />
-                     <div className="row">                        
+                    <DashboardTop/>
+                     <div className="row"> 
+                                              
                         <div className="col-lg-12">
                             <div className="card">  
                                 <div className="card-header">
                                     <div className="row align-items-center">
                                         <div className="col">                      
-                                            <h4 className="card-title">All City</h4>                      
+                                            <h4 className="card-title">All User</h4>                      
+                                        </div>
+                                        <div className="col-auto"> 
+                                            <a href="#" className="text-primary">View All</a>   
                                         </div>
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showClass={'alert-success fade show'}/>}
+                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
-                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addCityFunction()}>Add New City</button>
+                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addWasteCategory()}>Add New Measurement</button>
                                         </div>
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">
@@ -117,12 +62,12 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
                                             </thead>
 
                                             <tbody>
-                                                {cityList.map((item,index)=>(
+                                                {wasteCategory.map((item,index)=>(
                                                     <tr key={index}>
                                                         <td>{index+1}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.is_active ===1?'Active':'In-Active'}</td>
-                                                        <td><a className='' onClick={()=>editCity(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
+                                                        <td><a className='' onClick={()=>editWasteCategory(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
                                                     </tr>
                                                 ))}                                                                                              
                                             </tbody>
@@ -133,9 +78,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
                             </div>
                         </div>      
                     </div>
-
                 </div>
-
                 <div className="offcanvas offcanvas-end" tabIndex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
                     <div className="offcanvas-header border-bottom">
                       <h5 className="m-0 font-14" id="AppearanceLabel">Appearance</h5>

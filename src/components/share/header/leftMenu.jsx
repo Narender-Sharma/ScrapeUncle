@@ -98,6 +98,9 @@ export const LeftMenu = ({showLeftMenu}) => {
                                 <Link className="nav-link" to={'./dashboard'}>Dashboard</Link>
                             </li>
                             <li className="nav-item">
+                                <Link className="nav-link" to={'/waste-category'}>Waste Category</Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link className="nav-link" to={'/banner'}>Add Banner</Link>
                             </li>
                             <li className="nav-item">

@@ -54,7 +54,7 @@ export const Login = () => {
         if(userMobile != undefined){
           let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
           if(logout.success === 1){
-              removeItemInCookie('userEmail');
+                removeItemInCookie('userEmail');
                 removeItemInCookie('userAdminLogin');
                 navigate('/login');
           }else{
@@ -96,8 +96,8 @@ export const Login = () => {
             const verify = await LoginOtpVerify(payLoad);
             if(verify.message === 'OTP verified successfully!'){
                 if(verify.data.userType === 'Admin'){
-                setItemInCookie('userAdminLogin', verify.token);
-                loginWith === 'email'?  setItemInCookie('userEmail', verify.data.email):setItemInCookie('mobile', verify.data.mobile);
+                setItemInCookie('userAdminLogin', verify.token, 2147483647);
+                loginWith === 'email'?  setItemInCookie('userEmail', verify.data.email, 2147483647):setItemInCookie('mobile', verify.data.mobile, 2147483647);
                 navigate('/dashboard');
                 }else{
                     setErrorMsg('user not authorized')
