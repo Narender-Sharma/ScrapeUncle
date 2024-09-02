@@ -1,7 +1,7 @@
 import { httpClient } from "../helpers/http-client";
 const adminLogin = async(data) => {
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/users/sendOtp`,data,{});
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/users/sendOtp`,data,{});
         return response.data;
     } catch (err) {
         return {"message" :  err.response &&  err.response.data && err.response.data.message};
@@ -10,7 +10,7 @@ const adminLogin = async(data) => {
 }
 const adminLogOut = async(data) => {
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/users/logout`,data,{});
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/users/logout`,data,{});
         return response.data;
     } catch (err) {
         return {"message" :  err.response &&  err.response.data && err.response.data.message};
@@ -19,7 +19,7 @@ const adminLogOut = async(data) => {
 }
 const LoginOtpVerify = async(data) => {
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/users/verifyOtp`,data,{});
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/users/verifyOtp`,data,{});
         return response.data;
     } catch (err) {
         return {"message" :  err.response &&  err.response.data && err.response.data.message};
@@ -30,7 +30,7 @@ const adminGetUser = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL+`/api/users`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/users`,
             {
                 headers
             }

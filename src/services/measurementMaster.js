@@ -5,7 +5,7 @@ const getMeasurementMaster = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL+`/api/weight`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/weight`,
             {
                 headers
             }
@@ -21,7 +21,7 @@ const addNewMeasurement = async(token,data) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/weight/create`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/weight/create`,data,
             {
                 headers
             }
@@ -37,7 +37,7 @@ const measurementUpdate = async(token,data) =>{
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/weight/update`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/weight/update`,data,
             {
                 headers
             }

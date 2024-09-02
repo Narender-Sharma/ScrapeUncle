@@ -5,7 +5,7 @@ const getCityMaster = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL+`/api/city`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/city`,
             {
                 headers
             }
@@ -21,7 +21,7 @@ const addNewCity = async(token,data) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/city/create`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/city/create`,data,
             {
                 headers
             }
@@ -37,7 +37,7 @@ const cityUpdate = async(token,data) =>{
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/city/update`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/city/update`,data,
             {
                 headers
             }

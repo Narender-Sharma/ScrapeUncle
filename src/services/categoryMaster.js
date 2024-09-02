@@ -5,7 +5,7 @@ const getCategoryMaster = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL+`/api/category`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/category`,
             {
                 headers
             }
@@ -21,7 +21,7 @@ const createCategory = async(token,data) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/category/create`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/category/create`,data,
             {
                 headers
             }
@@ -37,7 +37,7 @@ const updateCategory = async(token,data) =>{
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/category/update`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/category/update`,data,
             {
                 headers
             }

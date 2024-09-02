@@ -4,7 +4,7 @@ const getAddBanner = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL+`/api/ad`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/ad`,
             {
                 headers
             }
@@ -20,7 +20,7 @@ const addNewBanner = async(token,data) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/ad/create`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/ad/create`,data,
             {
                 headers
             }
@@ -37,7 +37,7 @@ const bannerUpdate = async(token,data) =>{
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.post(process.env.REACT_APP_BASE_URL+`/api/ad/update`,data,
+        const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/ad/update`,data,
             {
                 headers
             }
