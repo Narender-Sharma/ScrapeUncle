@@ -5,8 +5,6 @@ import {getAddBanner,bannerUpdate,addNewBanner} from './../../services/addBanner
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
 export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) => {
   const [editBanner, setEditBanner] = useState(false);
-  const [cityBanner, setBannerModel] = useState(false);
-  const [editCurrent, setEditCurrent] = useState(-1);
   const [payload, setPayload] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [addLebal, setaddLebal] = useState(true);

@@ -1,22 +1,64 @@
 import React, {useEffect, useState } from 'react'
 import { DashboardTop } from './../dashboardTop';
-import { Alert} from '../share'
-export const WasteCategoryCom = ({setWasteCategoryUpd,wasteCategory}) => {
+import { Alert, WasteCategoryModel} from '../share';
+import { getItemFromCookie } from '../../helpers/cookie';
+import {getMeasurementMaster} from './../../services/measurementMaster';
+import {getCategory,addCategory,categoryUpdate} from './../../services/wasteCategory';
+export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCategoryUpd,wasteCategory,setWasteCategory}) => {
   const [showAlert, setShowAlert] = useState(false);
-  const addWasteCategory = ()=>{
+  const [payload, setPayload] = useState('');
+  const [addLebal, setaddLebal] = useState(true);
+  const [editBanner, setEditBanner] = useState(false);
+  const [meashuMaster, setMeashuMaster] = useState([]);
+  let message='';
+  let showClass='';
+  useEffect(() => {
+    getMeasure();
+  }, []);
+  const getMeasure = async ()=>{
+        let mesd = await getMeasurementMaster(userAdminLogin);
+        if(mesd.success === 1){
+            setMeashuMaster(mesd.data)
+        }
+  }
+  const addMeasurementFunction = ()=>{
+        setEditBanner(!editBanner);
+        setPayload('')
+        setaddLebal(true);
+    } 
+  const addWasteCategory = async ()=>{
+    setaddLebal(true)
+    let data = await addCategory(userAdminLogin,payload);
+    if(data.success === 1){
+        message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
+        showClass= 'alert-success fade show';
+        setShowAlert(true);
+        setEditBanner(false)
+        setWasteCategoryUpd(!wasteCategoryUpd);
+    }if(data.success === '0'){
+        setShowAlert(true);
+        message = message.sqlMessage;
+        setEditBanner(false);
+        setWasteCategoryUpd(!wasteCategoryUpd);
+    }
 
   }
-  const editWasteCategory = ()=>{
-    
+  const editWasteCategory = (id)=>{
+    setaddLebal(false)
+    setEditBanner(true);
+    let westcty = wasteCategory.filter((item)=>item.id === id);
+    setPayload(westcty[0]);
+    setWasteCategoryUpd(!wasteCategoryUpd)
   }
   return (
     <>
+    {editBanner && <WasteCategoryModel meashuMaster={meashuMaster} bannerFunction={addLebal === true?addWasteCategory:editWasteCategory} setEditBanner={setEditBanner} setPayload={setPayload} payload={payload}/> }
       <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
-                            <div className="page-title-box">
+                            <div className="page-title-box">    
                                 <div className="float-end">
                                     <ol className="breadcrumb">
                                         <li className="breadcrumb-item"><a href="#">Metrica</a>
@@ -38,10 +80,7 @@ export const WasteCategoryCom = ({setWasteCategoryUpd,wasteCategory}) => {
                                 <div className="card-header">
                                     <div className="row align-items-center">
                                         <div className="col">                      
-                                            <h4 className="card-title">All User</h4>                      
-                                        </div>
-                                        <div className="col-auto"> 
-                                            <a href="#" className="text-primary">View All</a>   
+                                            <h4 className="card-title">All Category</h4>                      
                                         </div>
                                     </div>                                   
                                 </div>                                
@@ -49,23 +88,28 @@ export const WasteCategoryCom = ({setWasteCategoryUpd,wasteCategory}) => {
                                 {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
-                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addWasteCategory()}>Add New Measurement</button>
+                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add New Measurement</button>
                                         </div>
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th>S.No.</th>
-                                                    <th>City Name</th>
+                                                    <th>Category Name</th>
+                                                    <th>Label</th>
+                                                    <th>Measurement</th>
+                                                    <th>Icon</th>
                                                     <th>Active</th>
                                                     <th>Edit</th>
                                                 </tr>
                                             </thead>
-
                                             <tbody>
                                                 {wasteCategory.map((item,index)=>(
                                                     <tr key={index}>
                                                         <td>{index+1}</td>
                                                         <td>{item.name}</td>
+                                                        <td>{item.label}</td>
+                                                        <td>{item.weight}</td>
+                                                        <td>{item.image !=''?item.image:''}</td>
                                                         <td>{item.is_active ===1?'Active':'In-Active'}</td>
                                                         <td><a className='' onClick={()=>editWasteCategory(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
                                                     </tr>

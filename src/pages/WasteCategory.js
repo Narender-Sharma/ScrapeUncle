@@ -42,7 +42,7 @@ export default function WasteCategory(){
       } 
   return (
     <>
-        {wasteCategory && wasteCategory.length > 0  &&  <WasteCategoryCom setWasteCategoryUpd={setWasteCategoryUpd} wasteCategory={wasteCategory}/>}
+        {wasteCategory && wasteCategory.length > 0  &&  <WasteCategoryCom userAdminLogin={userAdminLogin} setWasteCategoryUpd={setWasteCategoryUpd} wasteCategoryUpd={wasteCategoryUpd} wasteCategory={wasteCategory}/>}
     </>
   )
 }
