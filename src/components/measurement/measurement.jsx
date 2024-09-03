@@ -31,7 +31,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const addCity = async()=>{
       if(payload.name !=='' && payload.is_active !==''){
           setaddLebal(true);
-          useState(true)
+          setLoader(true)
           setMeasureMentUpd(!measureMentUpd);
           let data = await addNewMeasurement(userAdminLogin,payload);
           if(data.success === 1){
@@ -39,10 +39,10 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
               showClass= 'alert-success fade show';
               setShowAlert(true);
               setWeightModel(false);
-              useState(false);
+              setLoader(false);
           }if(data.success === '0'){
               setShowAlert(true);
-              useState(false);
+              setLoader(false);
               message = message.sqlMessage;
               setWeightModel(false)
           }
@@ -53,18 +53,18 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const upDateCity = async()=>{
       if(payload.name !=='' && payload.is_active !==''){     
           setaddLebal(false)       
-          useState(true);
+          setLoader(true);
           let data = await measurementUpdate(userAdminLogin,payload);
           if(data.success === 1){
               message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
               showClass= 'alert-success fade show';
-              useState(false);
+              setLoader(false);
               setShowAlert(true);
               setWeightModel(false);
               setPayload('')
           }if(data.success === '0'){
               setShowAlert(true);
-              useState(false);
+              setLoader(false);
               message = message.sqlMessage;
               showClass= 'alert-danger fade show';
               setWeightModel(false)
