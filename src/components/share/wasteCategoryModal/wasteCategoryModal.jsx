@@ -9,7 +9,7 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
         weight:'',
         is_active:true,
         image:'',
-        parent_id:''
+        parent_id:'0'
     }
     const [form, setForm] = useState(payload?payload:editBanner)
     const [selectedImage, setSelectedImage] = useState(payload.image != ''?payload.image:'');

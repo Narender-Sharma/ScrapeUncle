@@ -5,3 +5,4 @@ export * from './editCity';
 export * from './Alert';
 export * from './editMeasurement';
 export * from './wasteCategoryModal';
+export * from './Loader';

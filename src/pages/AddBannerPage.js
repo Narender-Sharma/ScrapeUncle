@@ -3,7 +3,8 @@ import { HomePageBanner } from "../components/homePageBanner"
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import {getAddBanner} from './../services/addBanner';
 import { useNavigate } from "react-router-dom";
-import { adminLogOut } from '../services/userServices'
+import { adminLogOut } from '../services/userServices';
+import { Loader } from '../components/share';
 export default function AddBanner () {
   const [allBanner, setAllBanner] = useState([]);
   const [bannerUpd, setBannerUpd] = useState([]);
@@ -16,7 +17,7 @@ export default function AddBanner () {
     getAllAddBanner()
   }, [bannerUpd]);
   const userLogout = async () =>{
-    if(userMobile != undefined){
+    if(userMobile != undefined || userEmail !=undefined){
       let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
       if(logout.success === 1){
           removeItemInCookie('userEmail');
@@ -42,6 +43,6 @@ export default function AddBanner () {
     }
   } 
   return (
-    <HomePageBanner allBanner={allBanner} setBannerUpd={setBannerUpd} bannerUpd={bannerUpd} setAllBanner={setAllBanner}/>
+    allBanner.length > 0 ? <HomePageBanner allBanner={allBanner} setBannerUpd={setBannerUpd} bannerUpd={bannerUpd} setAllBanner={setAllBanner}/>:<Loader/>
   )
 }

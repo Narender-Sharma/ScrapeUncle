@@ -4,6 +4,7 @@ import {getMeasurementMaster} from './../services/measurementMaster';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import { useNavigate } from "react-router-dom";
 import { adminLogOut } from '../services/userServices'
+import { Loader } from '../components/share';
 export default function LoginPage(){
     const [weightList, setWeightList] = useState([]);
     const [measureMentUpd, setMeasureMentUpd] = useState(true);
@@ -15,7 +16,7 @@ export default function LoginPage(){
         getCityData();
       }, [measureMentUpd]);
     const userLogout = async () =>{
-      if(userMobile != undefined){
+      if(userMobile != undefined || userEmail !=undefined){
         let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
         if(logout.success === 1){
             removeItemInCookie('userEmail');
@@ -42,7 +43,7 @@ export default function LoginPage(){
       } 
   return (
     <>
-    {weightList && weightList.length > 0  &&  <Measurement weightList={weightList} measureMentUpd={measureMentUpd} setMeasureMentUpd={setMeasureMentUpd}/>}
+    {weightList && weightList.length > 0 ?  <Measurement weightList={weightList} measureMentUpd={measureMentUpd} setMeasureMentUpd={setMeasureMentUpd}/>:<Loader/>}
     </>
   )
 }

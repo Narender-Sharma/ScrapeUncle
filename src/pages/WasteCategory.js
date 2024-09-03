@@ -4,6 +4,7 @@ import {getCategory} from './../services/wasteCategory';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import { useNavigate } from "react-router-dom";
 import { adminLogOut } from '../services/userServices'
+import { Loader } from '../components/share';
 export default function WasteCategory(){
     const [wasteCategoryUpd, setWasteCategoryUpd] = useState([]);
     const [wasteCategory, setWasteCategory] = useState(true);
@@ -15,7 +16,7 @@ export default function WasteCategory(){
         getCityData();
       }, [wasteCategoryUpd]);
     const userLogout = async () =>{
-      if(userMobile != undefined){
+      if(userMobile != undefined || userEmail !=undefined){
         let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
         if(logout.success === 1){
             removeItemInCookie('userEmail');
@@ -42,7 +43,7 @@ export default function WasteCategory(){
       } 
   return (
     <>
-        {wasteCategory && wasteCategory.length > 0  &&  <WasteCategoryCom userAdminLogin={userAdminLogin} setWasteCategoryUpd={setWasteCategoryUpd} wasteCategoryUpd={wasteCategoryUpd} wasteCategory={wasteCategory}/>}
+        {wasteCategory && wasteCategory.length > 0 ?  <WasteCategoryCom userAdminLogin={userAdminLogin} setWasteCategoryUpd={setWasteCategoryUpd} wasteCategoryUpd={wasteCategoryUpd} wasteCategory={wasteCategory}/>:<Loader/>}
     </>
   )
 }

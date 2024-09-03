@@ -3,12 +3,13 @@ import { BannerEditModal,Alert } from '../share';
 import { DashboardTop } from './../dashboardTop';
 import {getAddBanner,bannerUpdate,addNewBanner} from './../../services/addBanner';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
+import { Loader } from '../share';
 export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) => {
   const [editBanner, setEditBanner] = useState(false);
   const [payload, setPayload] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [addLebal, setaddLebal] = useState(true);
-
+  const [loader, setLoader] = useState(false);
   let message='';
   let showClass='';
   const userAdminLogin = getItemFromCookie('userAdminLogin');
@@ -36,14 +37,17 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
         if(payload.name !=='' && payload.is_active !==''){
             setaddLebal(true);
             // let data =''
+            setLoader(true)
             const response = await addNewBanner(userAdminLogin,payload);
             if(response.success === 1){
+                setLoader(false)
                 message = '<strong>Well done!</strong> 👍 You successfully Add Banner.';
                 showClass= 'alert-success fade show';
                 setShowAlert(true);
                 setEditBanner(!editBanner);
                 setBannerUpd(!bannerUpd);
             }if(response.success === '0'){
+                setLoader(false)
                 setShowAlert(true);
                 setEditBanner(!editBanner);
                 message = message.sqlMessage;
@@ -54,17 +58,20 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
     }
     const upDateBanner = async()=>{
         if(payload.name !=='' && payload.is_active !==''){
-            setaddLebal(false)
+            setaddLebal(false);
+            setLoader(true)
             let data = await bannerUpdate(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Update Banner.';
                 showClass= 'alert-success fade show';
+                setLoader(false)
                 setShowAlert(true);
                 setPayload('');
                 setBannerUpd(!bannerUpd);
                 setEditBanner(!editBanner);
             }if(data.success === '0'){
                 setShowAlert(true);
+                setLoader(false)
                 setEditBanner(!editBanner);
                 message = message.sqlMessage;
                 showClass= 'alert-danger fade show';
@@ -74,9 +81,8 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
     }
   return (
     <>
-    
+      {loader &&  <Loader/>}
       {editBanner && <BannerEditModal bannerFunction={addLebal === true?addBanner:upDateBanner} payload={payload} setPayload={setPayload} setEditBanner={setEditBanner}/> }
-     
         <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">

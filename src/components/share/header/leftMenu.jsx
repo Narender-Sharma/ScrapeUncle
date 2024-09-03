@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { Loader } from '../Loader/Loader';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../../helpers/cookie';
 import { adminLogOut } from '../../../services/userServices'
 export const LeftMenu = ({showLeftMenu}) => {
     const [menu,setMenu] = useState(1);
+    const [loader,setLoader] = useState(false);
     const userAdminLogin = getItemFromCookie('userAdminLogin');
     const userEmail = getItemFromCookie('userEmail');
     const userMobile = getItemFromCookie('mobile');
@@ -13,21 +15,30 @@ export const LeftMenu = ({showLeftMenu}) => {
         id === menu?setMenu(-1):setMenu(id);
     }
     const userLogout = async () =>{
-        if(userMobile != undefined){
+        if(userAdminLogin){
+            setLoader(true)
           let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
           if(logout.success === 1){
-              removeItemInCookie('userEmail');
+                setLoader(false)
+                removeItemInCookie('userEmail');
                 removeItemInCookie('userAdminLogin');
                 navigate('/login');
           }else{
+                setLoader(false)
                 removeItemInCookie('userEmail');
                 removeItemInCookie('userAdminLogin');
                 navigate('/login');
           }
+        }else{
+                setLoader(false)
+                removeItemInCookie('userEmail');
+                removeItemInCookie('userAdminLogin');
+                navigate('/login');
         }
       }
   return (
     <>
+        {loader && <Loader/>}
         <div className="leftbar-tab-menu">
             <div className="main-icon-menu">
                 <a href="/dashboard" className="logo logo-metrica d-block text-center">
@@ -112,8 +123,8 @@ export const LeftMenu = ({showLeftMenu}) => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/weight-manage"></Link>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href={'javascript:void(0)'} onClick={()=>userLogout()}>Logout</a>
+                            <li className="nav-item pe-none" onClick={()=>userLogout()}>
+                                <span className="nav-link" >Logout</span>
                             </li>
                         </ul>
                     </div>

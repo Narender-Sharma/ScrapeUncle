@@ -1,14 +1,14 @@
 import React, { useState,useEffect } from 'react'
-import {EditCity,Alert} from '../share'
+import {EditCity,Alert, Loader} from '../share'
 import { addNewCity,cityUpdate } from '../../services/cityMaster';
 import { DashboardTop } from './../dashboardTop';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
-
 export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
     const [cityModel, setCityModel] = useState(false);
     const [payload, setPayload] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [addLebal, setaddLebal] = useState(true);
+    const [loader, setLoader] = useState(false)
     let message='';
     let showClass='';
     const userAdminLogin = getItemFromCookie('userAdminLogin');
@@ -31,15 +31,18 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
     }
     const addCity = async ()=>{
         if(payload.name !=='' && payload.is_active !==''){
+            setLoader(true)
             let data = await addNewCity(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Add City.';
                 showClass= 'alert-success fade show';
                 setShowAlert(true);
                 setCityModel(false)
+                setLoader(false)
                 setCityUpd(!cityUpd);
             }if(data.success === '0'){
                 setShowAlert(true);
+                setLoader(false)
                 message = message.sqlMessage;
                 setCityModel(false)
             }
@@ -48,15 +51,18 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
     }
     const upDateCity = async()=>{
         if(payload.name !=='' && payload.is_active !==''){
+            setLoader(true)
             let data = await cityUpdate(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Update City.';
                 showClass= 'alert-success fade show';
+                setLoader(false)
                 setShowAlert(true);
                 setCityModel(false);
                 setPayload('');
                 setCityUpd(!cityUpd);
             }if(data.success === '0'){
+                setLoader(false)
                 setShowAlert(true);
                 message = message.sqlMessage;
                 showClass= 'alert-danger fade show';
@@ -71,6 +77,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
     }
   return (
     <>
+        {loader &&  <Loader/>}
         {cityModel  && <EditCity addLebal={addLebal} upDateCity={upDateCity} payload={payload} addCity={addCity} setPayload={setPayload} setEditBanner={setCityModel}/>}    
         <div className="page-wrapper">
             <div className="page-content-tab">

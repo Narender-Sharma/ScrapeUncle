@@ -4,6 +4,7 @@ import {getCityMaster} from './../services/cityMaster';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import { useNavigate } from "react-router-dom";
 import { adminLogOut } from '../services/userServices'
+import { Loader } from '../components/share';
 export default function LoginPage(){
     const [cityList, setCityList] = useState([]);
     const [cityUpd, setCityUpd] = useState(true);
@@ -15,7 +16,7 @@ export default function LoginPage(){
         getCityData()
       }, [cityUpd]);
       const userLogout = async () =>{
-        if(userMobile != undefined){
+        if(userMobile != undefined || userEmail !=undefined){
           let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
           if(logout.success === 1){
               removeItemInCookie('userEmail');
@@ -42,7 +43,7 @@ export default function LoginPage(){
       } 
   return (
     <>
-    {cityList && cityList.length > 0  &&  <CityMaster cityList={cityList} setCityUpd={setCityUpd} cityUpd={cityUpd}/>}
+    {cityList && cityList.length > 0 ?   <CityMaster cityList={cityList} setCityUpd={setCityUpd} cityUpd={cityUpd}/>:<Loader/>}
     </>
   )
 }

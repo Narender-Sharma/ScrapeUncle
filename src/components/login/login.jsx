@@ -4,6 +4,7 @@ import Validation from '../../form/Validation';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
 import { decrypt_object } from "../../helpers/Base64Encode";
 import { adminLogin,LoginOtpVerify,adminLogOut } from '../../services/userServices';
+import { Loader } from './../share';
 export const Login = () => {
     let user = {
         email:"sharmanarender06@gmail.com",
@@ -15,6 +16,7 @@ export const Login = () => {
     const [loginWith, setLoginWith] = useState('email');
     const [otpText, setOTPText] = useState('');
     const [OTPShow, setOTPShow] = useState(false);
+    const [loader, setLoader] = useState(false)
     const userEmail = getItemFromCookie('userEmail');
     const userMobile = getItemFromCookie('mobile');
     const userAdminLogin = getItemFromCookie('userAdminLogin');
@@ -51,14 +53,19 @@ export const Login = () => {
         }
       }
       const userLogout = async () =>{
-        if(userMobile != undefined){
+        if(userMobile != undefined || userEmail !=undefined){
+            setLoader(true)
           let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
           if(logout.success === 1){
+                setLoader(false)
                 removeItemInCookie('userEmail');
+                removeItemInCookie('mobile');
                 removeItemInCookie('userAdminLogin');
                 navigate('/login');
           }else{
+                setLoader(false)
                 removeItemInCookie('userEmail');
+                removeItemInCookie('mobile');
                 removeItemInCookie('userAdminLogin');
                 navigate('/login');
           }
@@ -67,10 +74,13 @@ export const Login = () => {
       const sendLogin = async () => {
         if((userAdmin.mobile === '' || Validation.validateEmail(userAdmin.email))){
             if (!userAdminLogin) {
+                setLoader(true)
                 const login = await adminLogin(userAdmin);
                 if (login.message === "OTP sent successfully!") {
+                    setLoader(false)
                     setOTPShow(true);
                 }else if(login.message === 'User is already login!'){
+                    setLoader(false)
                     let logout = await userLogout();
                     if(logout){
                         navigate('/dashboard');
@@ -78,7 +88,8 @@ export const Login = () => {
                     }
                     
                 } else {
-                  setErrorMsg(login.message);
+                    setLoader(false)
+                    setErrorMsg(login.message);
                }
               } 
               else {
@@ -93,8 +104,10 @@ export const Login = () => {
                 "mobile":userAdmin.mobile,
                 "otp":otpText
             }
+            setLoader(true)
             const verify = await LoginOtpVerify(payLoad);
             if(verify.message === 'OTP verified successfully!'){
+                setLoader(false)
                 if(verify.data.userType === 'Admin'){
                 setItemInCookie('userAdminLogin', verify.token, 2147483647);
                 loginWith === 'email'?  setItemInCookie('userEmail', verify.data.email, 2147483647):setItemInCookie('mobile', verify.data.mobile, 2147483647);
@@ -107,6 +120,7 @@ export const Login = () => {
       }
   return (
     <>
+    {loader && <Loader />}
         <div className="container-fluid">
             <div className="row vh-100">
                 <div className="col-12">

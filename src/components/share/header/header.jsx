@@ -15,7 +15,7 @@ export const Header = ({setShowLeftMenu,showLeftMenu}) => {
         getUserData()
       }, []);
       const userLogout = async () =>{
-        if(userMobile != undefined){
+        if(userMobile != undefined || userEmail !=undefined){
           let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
           if(logout.success === 1){
               removeItemInCookie('userEmail');
@@ -35,10 +35,15 @@ export const Header = ({setShowLeftMenu,showLeftMenu}) => {
             let GetUser = await adminGetUser(userAdminLogin);
             if(GetUser.success === 1){
                 let userEmail = getItemFromCookie('userEmail');
-                let user = GetUser.data.filter((item)=>item.email === userEmail && item.userType === "Admin" );
+                let user;
+                if(userMobile != undefined){
+                    user = GetUser.data.filter((item)=>item.mobile === userMobile && item.userType === "Admin" );
+                }else{
+                     user = GetUser.data.filter((item)=>item.email === userEmail && item.userType === "Admin" );
+                }
                 setUserDetails(user[0])
             }else{
-                userLogout()
+                // user Logout()
             }
         }
       } 

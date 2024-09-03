@@ -4,6 +4,7 @@ import Validation from '../form/Validation';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import { DashBoard } from '../components'
 import { adminLogin,adminGetUser,adminLogOut } from '../services/userServices';
+import { Loader } from '../components/share';
 export default function DashBoardPage(){
     const [userDetails, setUserDetails] = useState('');
     const [allUserDetails, setAllUserDetails] = useState('');
@@ -15,7 +16,7 @@ export default function DashBoardPage(){
     getUserData()
   }, []);
   const userLogout = async () =>{
-    if(userMobile != undefined){
+    if(userMobile !== undefined || userEmail !== undefined){
       let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
       if(logout.success === 1){
           removeItemInCookie('userEmail');
@@ -33,12 +34,9 @@ export default function DashBoardPage(){
         navigate('/login');
        }else if(userAdminLogin !=''){
         let GetUser = await adminGetUser(userAdminLogin);
+        let user;
         if(GetUser.success === 1){
-            console.log(GetUser, 'GetUser')
-            let user = userEmail !== undefined ? GetUser.data.filter((item)=>item.email === userEmail && item.userType === "Admin" ): GetUser.data.filter((item)=>item.mobile === userMobile && item.userType === "Admin" );
-            if(user.length > 0 ){
-              userLogout();
-            }
+            userMobile != undefined?user = GetUser.data.filter((item)=>item.mobile === userMobile && item.userType === "Admin" ):user = GetUser.data.filter((item)=>item.email === userEmail && item.userType === "Admin" );
             setUserDetails(user[0]);
             setAllUserDetails(GetUser.data);
         }else{
@@ -46,8 +44,7 @@ export default function DashBoardPage(){
         }
     }
   } 
-  console.log(allUserDetails, 'allUserDetails')
   return (
-    allUserDetails.length > 0? <DashBoard userDetails={userDetails} allUserDetails={allUserDetails}/>:''
+    allUserDetails.length > 0? <DashBoard userDetails={userDetails} allUserDetails={allUserDetails}/>:<Loader/>
   )
 }

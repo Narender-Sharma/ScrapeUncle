@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import {EditMeasurement,Alert} from '../share'
+import {EditMeasurement,Alert, Loader} from '../share'
 import { addNewMeasurement,measurementUpdate } from '../../services/measurementMaster';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
 import { DashboardTop } from './../dashboardTop';
@@ -8,6 +8,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const [payload, setPayload] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [addLebal, setaddLebal] = useState(true);
+  const [loader, setLoader] = useState(false);
   let message='';
   let showClass='';
   const userAdminLogin = getItemFromCookie('userAdminLogin');
@@ -30,15 +31,18 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const addCity = async()=>{
       if(payload.name !=='' && payload.is_active !==''){
           setaddLebal(true);
+          useState(true)
           setMeasureMentUpd(!measureMentUpd);
           let data = await addNewMeasurement(userAdminLogin,payload);
           if(data.success === 1){
               message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
               showClass= 'alert-success fade show';
               setShowAlert(true);
-              setWeightModel(false)
+              setWeightModel(false);
+              useState(false);
           }if(data.success === '0'){
               setShowAlert(true);
+              useState(false);
               message = message.sqlMessage;
               setWeightModel(false)
           }
@@ -49,15 +53,18 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const upDateCity = async()=>{
       if(payload.name !=='' && payload.is_active !==''){     
           setaddLebal(false)       
+          useState(true);
           let data = await measurementUpdate(userAdminLogin,payload);
           if(data.success === 1){
               message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
               showClass= 'alert-success fade show';
+              useState(false);
               setShowAlert(true);
               setWeightModel(false);
               setPayload('')
           }if(data.success === '0'){
               setShowAlert(true);
+              useState(false);
               message = message.sqlMessage;
               showClass= 'alert-danger fade show';
               setWeightModel(false)
@@ -72,6 +79,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
     }
   return (
     <>
+        {loader &&  <Loader/>}
         {weightModel  && <EditMeasurement addLebal={addLebal} upDateCity={upDateCity} payload={payload} addCity={addCity} setPayload={setPayload} setEditBanner={setWeightModel}/>}    
         <div className="page-wrapper">
             <div className="page-content-tab">
