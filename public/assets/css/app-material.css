@@ -385,7 +385,7 @@ File: Leftbar-tab
   border-right: 1px solid #eceff5;
   position: fixed;
   top: 0;
-  left: 60px;
+  left: 0px;
   z-index: 1001;
   border-right: 1px solid #eceff5;
 }
@@ -8544,5 +8544,4 @@ ul.steppedprogress li:first-child:after {
   font-size: 98px;
   font-weight: 700;
   text-shadow: rgba(137, 151, 189, 0.2) 1px 1px, rgba(137, 151, 189, 0.2) 2px 2px, rgba(137, 151, 189, 0.2) 3px 3px;
-}x 1px, rgba(137, 151, 189, 0.2) -2px 2px, rgba(137, 151, 189, 0.2) -3px 3px;
 }

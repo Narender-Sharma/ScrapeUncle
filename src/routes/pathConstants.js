@@ -4,7 +4,8 @@ const PathConstants = {
     ADDBANNER:"/banner",
     CITYUPDATE:"/cityUpdate",
     WEIGHTMANGE:"weight-manage",
-    WASTECATEGORY:"waste-category"
+    WASTECATEGORY:"waste-category",
+    ORDERS:"orders"
 }
 
 export default PathConstants

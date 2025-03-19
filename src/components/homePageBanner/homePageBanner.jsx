@@ -24,11 +24,11 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
     }
   }, [showAlert]);
   const editBannerID = (id)=>{
+    setaddLebal(false)
     setEditBanner(true);
     let currentbanner = allBanner.filter((item)=>item.id === id);
     setPayload(currentbanner[0]);
   }
-  
   const addCityFunction = ()=>{
     setPayload('')
     setEditBanner(true);
@@ -36,8 +36,7 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
     const addBanner = async ()=>{
         if(payload.name !=='' && payload.is_active !==''){
             setaddLebal(true);
-            // let data =''
-            setLoader(true)
+            setLoader(true);
             const response = await addNewBanner(userAdminLogin,payload);
             if(response.success === 1){
                 setLoader(false)
@@ -56,10 +55,11 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
             
         }
     }
+
     const upDateBanner = async()=>{
         if(payload.name !=='' && payload.is_active !==''){
             setaddLebal(false);
-            setLoader(true)
+            setLoader(true);
             let data = await bannerUpdate(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Update Banner.';
@@ -82,7 +82,7 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
   return (
     <>
       {loader &&  <Loader/>}
-      {editBanner && <BannerEditModal bannerFunction={addLebal === true?addBanner:upDateBanner} payload={payload} setPayload={setPayload} setEditBanner={setEditBanner}/> }
+      {editBanner && <BannerEditModal message={message} showClass={showClass} setShowAlert={setShowAlert} showAlert={showAlert} bannerFunction={addLebal === true?addBanner:upDateBanner} payload={payload} setPayload={setPayload} setEditBanner={setEditBanner}/> }
         <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
@@ -112,7 +112,7 @@ export const HomePageBanner = ({allBanner,setAllBanner,setBannerUpd,bannerUpd}) 
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
+                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showClass={showClass}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
                                             <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addCityFunction()}>Add New Banner</button>

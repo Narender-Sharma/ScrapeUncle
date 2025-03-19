@@ -6,3 +6,4 @@ export * from './Alert';
 export * from './editMeasurement';
 export * from './wasteCategoryModal';
 export * from './Loader';
+export * from './orderModal';

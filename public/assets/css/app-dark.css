@@ -385,7 +385,7 @@ File: Leftbar-tab
   border-left: 1px solid #333a4e;
   position: fixed;
   top: 0;
-  right: 60px;
+  right: 0px;
   z-index: 1001;
   border-left: 1px solid #333a4e;
 }

@@ -16,7 +16,7 @@ export const Login = () => {
     const [loginWith, setLoginWith] = useState('email');
     const [otpText, setOTPText] = useState('');
     const [OTPShow, setOTPShow] = useState(false);
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(false);
     const userEmail = getItemFromCookie('userEmail');
     const userMobile = getItemFromCookie('mobile');
     const userAdminLogin = getItemFromCookie('userAdminLogin');
@@ -80,13 +80,11 @@ export const Login = () => {
                     setLoader(false)
                     setOTPShow(true);
                 }else if(login.message === 'User is already login!'){
-                    setLoader(false)
-                    let logout = await userLogout();
-                    if(logout){
-                        navigate('/dashboard');
-                        setErrorMsg('please login Again!')
-                    }
-                    
+                    setLoader(false);
+                    setItemInCookie('userAdminLogin', login.response.data[0].token,2147483647);
+                    setItemInCookie('userEmail', login.response.data[0].email, 2147483647);
+                    setItemInCookie('mobile', login.response.data[0].mobile, 2147483647);
+                    navigate('/dashboard');
                 } else {
                     setLoader(false)
                     setErrorMsg(login.message);

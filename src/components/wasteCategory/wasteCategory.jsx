@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react'
 import { DashboardTop } from './../dashboardTop';
-import { Alert, WasteCategoryModel} from '../share';
+import { Alert, WasteCategoryModel,Loader} from '../share';
 import { getItemFromCookie } from '../../helpers/cookie';
 import {getMeasurementMaster} from './../../services/measurementMaster';
 import {getCategory,addCategory,categoryUpdate} from './../../services/wasteCategory';
@@ -10,6 +10,7 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
   const [addLebal, setaddLebal] = useState(true);
   const [editBanner, setEditBanner] = useState(false);
   const [meashuMaster, setMeashuMaster] = useState([]);
+  const [loader, setLoader] = useState(false);
   let message='';
   let showClass='';
   useEffect(() => {
@@ -27,32 +28,66 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
         setaddLebal(true);
     } 
   const addWasteCategory = async ()=>{
-    setaddLebal(true)
+    setaddLebal(true);
+    setLoader(true);
+    // const payFormat = new FormData();
+    //     payFormat.append("file", payload.image);
+    //     payFormat.append("name", payload.name);
+    //     payFormat.append("label", payload.label);
+    //     payFormat.append("weight_id", payload.weight);
+    //     // payFormat.append("is_active", payload.is_active);
+    //     payFormat.append("parent_id", "0");
     let data = await addCategory(userAdminLogin,payload);
     if(data.success === 1){
         message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
         showClass= 'alert-success fade show';
         setShowAlert(true);
-        setEditBanner(false)
+        setEditBanner(false);
+        setLoader(false);
         setWasteCategoryUpd(!wasteCategoryUpd);
     }if(data.success === '0'){
         setShowAlert(true);
         message = message.sqlMessage;
         setEditBanner(false);
+        setLoader(false);
         setWasteCategoryUpd(!wasteCategoryUpd);
     }
 
   }
+  const UpdateWasteCategory = async()=>{
+    if(payload.name !=='' && payload.is_active !==''){
+        setaddLebal(false);
+        setLoader(true);
+        let data = await categoryUpdate(userAdminLogin,payload);
+        if(data.success === 1){
+            message = '<strong>Well done!</strong> 👍 You successfully Update Banner.';
+            showClass= 'alert-success fade show';
+            setLoader(false)
+            setShowAlert(true);
+            setPayload('');
+            setWasteCategoryUpd(!wasteCategoryUpd);
+            setEditBanner(!editBanner);
+        }if(data.success === '0'){
+            setShowAlert(true);
+            setLoader(false)
+            setEditBanner(!editBanner);
+            message = message.sqlMessage;
+            showClass= 'alert-danger fade show';
+            
+        }
+    }
+}
   const editWasteCategory = (id)=>{
     setaddLebal(false)
     setEditBanner(true);
     let westcty = wasteCategory.filter((item)=>item.id === id);
     setPayload(westcty[0]);
-    setWasteCategoryUpd(!wasteCategoryUpd)
+    setWasteCategoryUpd(!wasteCategoryUpd);
   }
   return (
     <>
-    {editBanner && <WasteCategoryModel meashuMaster={meashuMaster} bannerFunction={addLebal === true?addWasteCategory:editWasteCategory} setEditBanner={setEditBanner} setPayload={setPayload} payload={payload}/> }
+    {loader && <Loader/>}
+    {editBanner && <WasteCategoryModel meashuMaster={meashuMaster} bannerFunction={addLebal === true?addWasteCategory:UpdateWasteCategory} setEditBanner={setEditBanner} setPayload={setPayload} payload={payload}/> }
       <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
@@ -94,9 +129,11 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th>S.No.</th>
-                                                    <th>Category Name</th>
+                                                    <th>Main Category Name</th>
+                                                    <th>Sub Category Name</th>
                                                     <th>Label</th>
                                                     <th>Measurement</th>
+                                                    <th>Price</th>
                                                     <th>Icon</th>
                                                     <th>Active</th>
                                                     <th>Edit</th>
@@ -106,9 +143,11 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
                                                 {wasteCategory.map((item,index)=>(
                                                     <tr key={index}>
                                                         <td>{index+1}</td>
+                                                        <td>{item.category}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.label}</td>
                                                         <td>{item.weight}</td>
+                                                        <td>{item.price}</td>
                                                         <td>{item.image !=''?item.image:''}</td>
                                                         <td>{item.is_active ===1?'Active':'In-Active'}</td>
                                                         <td><a className='' onClick={()=>editWasteCategory(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>

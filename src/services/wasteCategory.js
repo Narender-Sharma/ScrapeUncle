@@ -5,7 +5,7 @@ const getCategory = async(token) => {
         Authorization:`Bearer ${token}`,
     }
     try {
-        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/category`,
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/category/all`,
             {
                 headers
             }
@@ -19,6 +19,7 @@ const getCategory = async(token) => {
 const addCategory = async(token,data) => {
     let headers = {
         Authorization:`Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
     }
     try {
         const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/category/create`,data,
@@ -35,6 +36,7 @@ const addCategory = async(token,data) => {
 const categoryUpdate = async(token,data) =>{
     let headers = {
         Authorization:`Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
     }
     try {
         const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/category/update`,data,

@@ -40,52 +40,6 @@ export const LeftMenu = ({showLeftMenu}) => {
     <>
         {loader && <Loader/>}
         <div className="leftbar-tab-menu">
-            <div className="main-icon-menu">
-                <a href="/dashboard" className="logo logo-metrica d-block text-center">
-                    <span>
-                        <img src="/assets/images/logo-sm.png" alt="logo-small" className="logo-sm"/>
-                    </span>
-                </a>
-                <div className="main-icon-menu-body">
-                    <div className="position-reletive h-100" data-simplebar style={{overflowX: 'hidden;'}}>
-                        <ul className="nav nav-tabs" role="tablist" id="tab-menu">
-                            <li className="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" data-bs-trigger="hover">
-                                <a href="#MetricaDashboard" id="dashboard-tab" className={`nav-link ${menu ===1?`active`:''}`} onClick={()=>setCurrentMenu(1)}>
-                                    <i className="ti ti-smart-home menu-icon"></i>
-                                </a>
-                            </li>
-                            {/* <li className="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apps" data-bs-trigger="hover">
-                                <a href="#MetricaApps" id="apps-tab" className={`nav-link ${menu ===2?`active`:''}`} onClick={()=>setCurrentMenu(2)}>
-                                    <i className="ti ti-apps menu-icon"></i>
-                                </a>
-                            </li>
-
-                            <li className="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Uikit" data-bs-trigger="hover">
-                                <a href="#MetricaUikit" id="uikit-tab" className={`nav-link ${menu ===3?`active`:''}`} onClick={()=>setCurrentMenu(3)}>
-                                    <i className="ti ti-planet menu-icon"></i>
-                                </a>
-                            </li>
-
-                            <li className="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Pages" data-bs-trigger="hover">
-                                <a href="#MetricaPages" id="pages-tab" className={`nav-link ${menu ===4?`active`:''}`} onClick={()=>setCurrentMenu(4)}>
-                                    <i className="ti ti-files menu-icon"></i>
-                                </a>
-                            </li>
-
-                            <li className="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Authentication" data-bs-trigger="hover">
-                                <a href="#MetricaAuthentication" id="authentication-tab" className={`nav-link ${menu ===5?`active`:''}`} onClick={()=>setCurrentMenu(5)}>
-                                    <i className="ti ti-shield-lock menu-icon"></i>
-                                </a>
-                            </li> */}
-                        </ul>
-                    </div>
-                </div>
-                <div className="pro-metrica-end">
-                    <a href="" className="profile">
-                        <img src="/assets/images/users/user-4.jpg" alt="profile-user" className="rounded-circle thumb-sm"/>
-                    </a>
-                </div>
-            </div>
             <div className="main-menu-inner">
                 
                 <div className="topbar-left">
@@ -100,13 +54,16 @@ export const LeftMenu = ({showLeftMenu}) => {
                 <div className={`menu-body navbar-vertical tab-content ${showLeftMenu && `menuitem-active`}`} data-simplebar>
                     <div id="MetricaDashboard" className={`main-icon-menu-pane tab-pane ${menu === 1?`active show`:''}`} role="tabpanel"
                         aria-labelledby="dasboard-tab">
-                        <div className="title-box">
+                        {/* <div className="title-box">
                             <h6 className="menu-title">Dashboard</h6>
-                        </div>
+                        </div> */}
 
                         <ul className="nav flex-column">
                             <li className="nav-item">
                                 <Link className="nav-link" to={'./dashboard'}>Dashboard</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={'/orders'}>Orders</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={'/waste-category'}>Waste Category</Link>
@@ -120,10 +77,7 @@ export const LeftMenu = ({showLeftMenu}) => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/weight-manage">Weight Manage</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/weight-manage"></Link>
-                            </li>
-                            <li className="nav-item pe-none" onClick={()=>userLogout()}>
+                            <li className="nav-item CursorPointer" onClick={()=>userLogout()}>
                                 <span className="nav-link" >Logout</span>
                             </li>
                         </ul>

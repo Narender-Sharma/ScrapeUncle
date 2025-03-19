@@ -3,13 +3,12 @@ import React from 'react'
 export const Loader = () => {
   return (
     <>
-      <div className='modal modalLoader fade show' style={{display: 'flex', paddingLeft: '0px'}}>
+      <div className='modal modalLoader fade show' style={{display: 'flex', paddingLeft: '0px',zIndex:1156,background: "rgba(0,0,0,0.6)"}}>
         <div class="modal-dialog" role="document">
           <div class="d-flex justify-content-center">
               <div class="spinner-border text-light" role="status"></div>
           </div>
         </div>
-        
       </div>
       <div class="modal-backdrop fade show"></div>
     </>

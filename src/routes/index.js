@@ -6,7 +6,7 @@ const AddBanner = React.lazy(() => import("../pages/AddBannerPage"))
 const CityMange = React.lazy(() => import("../pages/CityManage"))
 const WeightMange = React.lazy(()=> import("../pages/MeasurementManage"))
 const WasteCategory = React.lazy(()=> import("../pages/WasteCategory"))
-
+const Orders = React.lazy(()=> import("../pages/OrdersPage"))
 const routes = [
     { path: PathConstants.HOME, element: <LoginPage /> },
     { path: PathConstants.DASHBOARD, element: <DashBoard /> },
@@ -14,6 +14,7 @@ const routes = [
     { path: PathConstants.CITYUPDATE, element: <CityMange /> },
     { path: PathConstants.WEIGHTMANGE, element: <WeightMange /> },
     { path: PathConstants.WASTECATEGORY, element: <WasteCategory /> },
+    { path: PathConstants.ORDERS, element: <Orders /> },
     { path: '', element: <LoginPage />}
     // other mappings ...
 ]

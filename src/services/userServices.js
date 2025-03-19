@@ -2,9 +2,11 @@ import { httpClient } from "../helpers/http-client";
 const adminLogin = async(data) => {
     try {
         const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/users/sendOtp`,data,{});
+        console.log(response, 'response')
         return response.data;
     } catch (err) {
-        return {"message" :  err.response &&  err.response.data && err.response.data.message};
+        console.log(err, 'err')
+        return {"message" :  err.response &&  err.response.data && err.response.data.message,"status" : err.response.status,"response": err.response.data};
         // console.error('error in adminLogin APi ', err);
     }
 }
@@ -41,6 +43,7 @@ const adminGetUser = async(token) => {
         console.error('error in adminLogin APi ', err);
     }
 }
+
 export {
     adminLogin,
     adminGetUser,

@@ -1,86 +1,72 @@
-import React, { useState,useEffect } from 'react'
-import {EditMeasurement,Alert, Loader} from '../share'
-import { addNewMeasurement,measurementUpdate } from '../../services/measurementMaster';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import Validation from '../../form/Validation';
+import {OrderModal,Alert, Loader} from '../share'
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
-import { DashboardTop } from './../dashboardTop';
-export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
-  const [weightModel, setWeightModel] = useState(false);
-  const [payload, setPayload] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
-  const [addLebal, setaddLebal] = useState(true);
-  const [loader, setLoader] = useState(false);
-  let message='';
-  let showClass='';
-  const userAdminLogin = getItemFromCookie('userAdminLogin');
-  useEffect(() => {
-      const timeId = setTimeout(() => {
-        // After 3 seconds set the show value to false
-        setShowAlert(false)
-      }, 3000)
-  
-      return () => {
-        clearTimeout(timeId)
-      }
-    }, [showAlert]);
-  const editWeight=(id)=>{
-        setaddLebal(false);
-        setWeightModel(true);
-        setMeasureMentUpd(!measureMentUpd)
-        let currentWeight = weightList.filter((item)=>item.id === id);
-        setPayload(currentWeight[0])
-  }
-  const addWeight = async()=>{
-      if(payload.name !=='' && payload.is_active !==''){
-          setLoader(true)
-          setMeasureMentUpd(!measureMentUpd);
-          let data = await addNewMeasurement(userAdminLogin,payload);
-          if(data.success === 1){
-              message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
-              showClass= 'alert-success fade show';
-              setShowAlert(true);
-              setWeightModel(false);
-              setLoader(false);
-          }if(data.success === '0'){
-              setShowAlert(true);
-              setLoader(false);
-              message = message.sqlMessage;
-              setWeightModel(false)
-          }
-          
-      }
-      
-  }
-  const upDateWeight = async()=>{
-      if(payload.name !=='' && payload.is_active !==''){          
-          setLoader(true);
-          let data = await measurementUpdate(userAdminLogin,payload);
-          if(data.success === 1){
-              message = '<strong>Well done!</strong> 👍 You successfully Update Measurement.';
-              showClass= 'alert-success fade show';
-              setLoader(false);
-              setShowAlert(true);
-              setWeightModel(false);
-              setaddLebal(false);
-              setPayload('')
-          }if(data.success === '0'){
-              setShowAlert(true);
-              setLoader(false);
-              message = message.sqlMessage;
-              showClass= 'alert-danger fade show';
-              setWeightModel(false)
-          }
-          
-      }
-  }
-  const addMeasurementFunction = ()=>{
-        setWeightModel(!weightModel);
-        setPayload('')
-        setaddLebal(true);
+import { decrypt_object } from "../../helpers/Base64Encode";
+import { adminLogin,adminGetUser } from '../../services/userServices';
+import { DashboardTop } from '../dashboardTop';
+import { getMeasurementMaster } from '../../services/measurementMaster';
+import { OrdersUpdate } from '../../services/orders';
+import moment from 'moment';
+export const Orders = ({userDetails,allUserDetails}) => {   
+    const [payload, setPayload] = useState('');
+    const [orderModel,setOrderModel  ] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const [weightList, setWeightList] = useState([]);
+    const userAdminLogin = getItemFromCookie('userAdminLogin');
+     let message='';
+    let showClass='';
+    const editOrders = async(id)=>{
+        setLoader(true);
+        let GetWeight = await getMeasurementMaster(userAdminLogin);
+            if(GetWeight.success === 1){
+                setLoader(false);
+                setOrderModel(!orderModel);
+                setWeightList(GetWeight.data)
+            }
+        let currentOrder = allUserDetails.filter((item)=>item.id === id);
+        setPayload(currentOrder[0])
     }
+    const UpdateOrder = async()=>{
+        
+        if(payload.name !=='' && payload.is_active !==''){
+            setLoader(true)
+            let NewPyload = {
+                "status":payload.status,
+                "is_active":payload.is_active,
+                "categoryId":payload.categoryId,
+                "weight":payload.weight,
+                "weightId":payload.weightId,
+                "addressId":payload.addressId,
+                "message":payload.message,
+                "date":moment(payload.date).utc().format('DD/MM/YYYY'),
+                "time":moment(payload.time).format('LTS')
+            }
+            let data = await OrdersUpdate(userAdminLogin,NewPyload,payload.id);
+            if(data.success === 1){
+                message = '<strong>Well done!</strong> 👍 You successfully Update City.';
+                showClass= 'alert-success fade show';
+                setLoader(false);
+                setOrderModel(false);
+                setShowAlert(true);
+                setPayload('');
+                
+            }if(data.success === '0'){
+                setLoader(false)
+                setShowAlert(true);
+                message = message.sqlMessage;
+                showClass= 'alert-danger fade show';
+                
+            }
+        }
+    }
+    console.log(payload, 'payload')
   return (
     <>
-        {loader &&  <Loader/>}
-        {weightModel  && <EditMeasurement addLebal={addLebal} upDateWeight={upDateWeight} payload={payload} addWeight={addWeight} setPayload={setPayload} setEditBanner={setWeightModel}/>}    
+        {loader && <Loader/>}
+        {orderModel && <OrderModal OrderUpdate={UpdateOrder} weightList={weightList} setPayload={setPayload} payload={payload} orderModel={orderModel} setOrderModel={setOrderModel}/> }
         <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
@@ -100,9 +86,8 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
                             </div>
                         </div>
                     </div>
-                    <DashboardTop/>
                      <div className="row"> 
-                                              
+                        <DashboardTop/>                 
                         <div className="col-lg-12">
                             <div className="card">  
                                 <div className="card-header">
@@ -116,30 +101,52 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
+                                    {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showClass={'alert-success fade show'}/>}
                                     <div className="table-responsive">
-                                        <div className="mb-2">
-                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add New Measurement</button>
-                                        </div>
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">
                                                 <tr>
-                                                    <th>S.No.</th>
-                                                    <th>City Name</th>
-                                                    <th>Active</th>
-                                                    <th>Edit</th>
+                                                    <th>User Name</th>
+                                                    <th>User Mobile</th>
+                                                    <th>User Email</th>
+                                                    <th>City</th>
+                                                    <th>Gender</th>
+                                                    <th>Waste Type</th>
+                                                    <th>Waste Weight</th>
+                                                    <th>Address Type</th>
+                                                    <th>Address</th>
+                                                    <th>Message</th>
+                                                    <th>Pick Time</th>
+                                                    <th>Pick Date</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
 
                                             <tbody>
-                                                {weightList.map((item,index)=>(
+                                                {allUserDetails && allUserDetails.length >  0? allUserDetails.map((item,index)=>(
                                                     <tr key={index}>
-                                                        <td>{index+1}</td>
-                                                        <td>{item.name}</td>
-                                                        <td>{item.is_active ===1?'Active':'In-Active'}</td>
-                                                        <td><a className='' onClick={()=>editWeight(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
+                                                        <td>{item.userName}</td>
+                                                        <td>{item.mobile}</td>
+                                                        <td>{item.email}</td>
+                                                        <td>{item.city}</td>
+                                                        <td>{item.gender}</td>
+                                                        <td>{item.categoryName}</td>
+                                                        <td>{item.weight} {item.weightName}</td>
+                                                        <td>{item.address_type}</td>
+                                                        <td>{item.address_line_1 + ' ' + item.address_line_2 + ' ' + item.pincode}</td>
+                                                        <td>{item.message}</td>
+                                                        <td>{item.time}</td>
+                                                        <td>{moment(item.date).utc().format('DD/MM/YYYY')}</td>
+                                                        <td>{item.status == 0 ? 'Incomplete':'Complete'}</td>
+                                                        <td><a className='' onClick={()=>editOrders(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
+
                                                     </tr>
-                                                ))}                                                                                              
+                                                )): <tr>
+                                                    <td colSpan={14}>
+                                                        <p>No Records Found</p>
+                                                    </td>
+                                                </tr> }                                                                                              
                                             </tbody>
                                         </table>
                                                                                        
@@ -148,7 +155,9 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
                             </div>
                         </div>      
                     </div>
+
                 </div>
+
                 <div className="offcanvas offcanvas-end" tabIndex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
                     <div className="offcanvas-header border-bottom">
                       <h5 className="m-0 font-14" id="AppearanceLabel">Appearance</h5>

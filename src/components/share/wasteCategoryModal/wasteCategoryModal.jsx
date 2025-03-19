@@ -2,32 +2,32 @@ import React, { useState,useRef } from 'react'
 import Validation from '../../../form/Validation';
 import imageCompression from "browser-image-compression";
 export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPayload,bannerFunction}) => {
-
+    console.log(payload, 'payload')
     let editBanner = {
         name:'',
         label:'',
-        weight:'',
         is_active:true,
         image:'',
-        parent_id:'0'
+        parent_id:'0',
+        weight_id:'0'
     }
     const [form, setForm] = useState(payload?payload:editBanner)
-    const [selectedImage, setSelectedImage] = useState(payload.image != ''?payload.image:'');
+    const [selectedImage, setSelectedImage] = useState(payload.image != ''?`${process.env.REACT_APP_BASE_URL_API}/image/`+payload.image:'');
     const fileUploadRef = useRef();
     const HandleChange = (e)=>{
        const {name,value,files} = e.target;
        if(name === 'image' && e.target.files){
         const uploadedFile = fileUploadRef.current.files[0];
+        if(uploadedFile.size > 512000){
+            // message = '<strong>&#x2718;</strong> 👍 File is too big'
+            // showClass = 'alert alert-danger fade show'
+            alert("File is too big!");
+            setForm({...form, image:''})
+            return
+        }
         const cachedURL = URL.createObjectURL(uploadedFile);
-        const formData = new FormData();
-        formData.append("file", uploadedFile);
-        formData.append("name", form.name);
-        formData.append("label", form.label);
-        formData.append("weight_id", form.weight);
-        formData.append("is_active", form.is_active);
         setSelectedImage(cachedURL)
-        console.log(formData, 'formData')
-        setForm(formData);
+        setForm({...form,image: uploadedFile});
        }else{
             let isValid = isAllowed(value, name);
             if (isValid) {
@@ -47,6 +47,7 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
             return  true;
         }
       }
+      console.log(form, 'form')
     setPayload(form);
   return (
     <>
@@ -54,7 +55,7 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
         <div className="modal-dialog modal-lg">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h6 className="modal-title mt-0" id="myLargeModalLabel">Add New Banner</h6>
+                    <h6 className="modal-title mt-0" id="myLargeModalLabel">{payload?'Update Waste Category':'Add Waste Category'}</h6>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={()=>setEditBanner(false)}></button>
                 </div>
                 <div className="modal-body">
@@ -69,18 +70,21 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
                                     <label className="form-label mt-2 mt-md-0" htmlFor="label">label</label>
                                     <input type="text" className="form-control" id="label" name='label' disabled={false} value={form.label} required="" onChange={(e)=>HandleChange(e)}/>
                                 </div>
-                                {/* <div className="col-md-12">
-                                    <label className="form-label mt-2 mt-md-0" htmlFor="weight">Measurement Manage</label>
-                                    <select className='form-select' name='weight' id='weight' onChange={(e)=>HandleChange(e)}>
+                                <div className="col-md-12">
+                                    <label className="form-label mt-2 mt-md-0" htmlFor="weight_id">Measurement Manage</label>
+                                    <select className='form-select' name='weight_id' id='weight_id' onChange={(e)=>HandleChange(e)}>
                                         <option>Select</option>
                                         {
                                             meashuMaster.map((item,id)=>(
                                                 <option key={id} value={item.id} selected = {form.weight === item.name ?'selected':''}>{item.name}</option>
                                             ))
                                         }
-                                        
                                     </select>
-                                </div> */}
+                                </div>
+                                <div className="col-md-12">
+                                    <label className="form-label mt-2 mt-md-0" htmlFor="price">Price</label>
+                                    <input type="text" className="form-control" id="price" name='price' disabled={false} value={form.price} required="" onChange={(e)=>HandleChange(e)}/>
+                                </div>
                                 <div className="col-md-12">
                                     <label className="form-label mt-2" htmlFor="PhoneNo">Banner Status</label><br/>
                                     <div className="form-check form-check-inline">

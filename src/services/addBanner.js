@@ -18,6 +18,7 @@ const getAddBanner = async(token) => {
 const addNewBanner = async(token,data) => {
     let headers = {
         Authorization:`Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
     }
     try {
         const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/ad/create`,data,
@@ -35,6 +36,7 @@ const addNewBanner = async(token,data) => {
 const bannerUpdate = async(token,data) =>{
     let headers = {
         Authorization:`Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
     }
     try {
         const response = await httpClient.post(process.env.REACT_APP_BASE_URL_API+`/api/ad/update`,data,

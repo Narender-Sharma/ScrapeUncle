@@ -37,13 +37,13 @@ export const Header = ({setShowLeftMenu,showLeftMenu}) => {
                 let userEmail = getItemFromCookie('userEmail');
                 let user;
                 if(userMobile != undefined){
-                    user = GetUser.data.filter((item)=>item.mobile === userMobile && item.userType === "Admin" );
+                    user =  GetUser.data.filter((item)=>( item.mobile === userMobile.toString() && item.userType === "Admin"));
                 }else{
                      user = GetUser.data.filter((item)=>item.email === userEmail && item.userType === "Admin" );
                 }
                 setUserDetails(user[0])
             }else{
-                // user Logout()
+                userLogout()
             }
         }
       } 

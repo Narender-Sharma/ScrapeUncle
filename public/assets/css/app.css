@@ -24,7 +24,7 @@ File: Topbar
   min-height: 60px;
   position: relative;
   border-bottom: 1px solid #eceff5;
-  margin-right: 260px;
+  margin-right: 200px;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -488,7 +488,7 @@ File: Leftbar-tab
   display: flex;
 }
 .page-wrapper .page-content-tab {
-  width: calc(100% - 260px);
+  width: calc(100% - 200px);
   margin-right: auto;
   position: relative;
   min-height: calc(100vh - 60px);
@@ -762,7 +762,7 @@ File: Leftbar
   display: flex;
 }
 .page-wrapper .page-content-tab {
-  width: calc(100% - 260px);
+  width: calc(100% - 200px);
   margin-right: auto;
   position: relative;
   min-height: calc(100vh - 60px);

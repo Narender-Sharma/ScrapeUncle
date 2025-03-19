@@ -1,7 +1,6 @@
 import React, { useState,useRef } from 'react'
 import Validation from '../../../form/Validation';
-import imageCompression from "browser-image-compression";
-export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction}) => {
+export const BannerEditModal = ({message,showClass,setShowAlert,showAlert,payload,setEditBanner,setPayload,bannerFunction}) => {    
     let editBanner = {
         name:'',
         is_active:true,
@@ -9,21 +8,22 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
         image:'',
     }
     const [form, setForm] = useState(payload?payload:editBanner)
-    const [selectedImage, setSelectedImage] = useState(payload.image != ''?payload.image:'');
+    const [selectedImage, setSelectedImage] = useState(payload.image != ''?`${process.env.REACT_APP_BASE_URL_API}/image/`+payload.image:'');
     const fileUploadRef = useRef();
     const HandleChange = (e)=>{
        const {name,value,files} = e.target;
        if(name === 'image' && e.target.files){
         const uploadedFile = fileUploadRef.current.files[0];
+        if(uploadedFile.size > 512000){
+            message = '<strong>&#x2718;</strong> 👍 File is too big'
+            showClass = 'alert alert-danger fade show'
+            alert("File is too big!");
+            setForm({...form, image:''})
+            return
+        }
         const cachedURL = URL.createObjectURL(uploadedFile);
-        const formData = new FormData();
-        formData.append("file", uploadedFile);
-        formData.append("name", form.name);
-        formData.append("url", form.url);
-        formData.append("is_active", form.is_active);
-        console.log(formData, 'formData')
         setSelectedImage(cachedURL)
-        setForm(formData);
+        setForm({...form, image:uploadedFile});
        }else{
             let isValid = isAllowed(value, name);
             if (isValid) {
@@ -31,7 +31,6 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
             }
        }
     }
-
     const isAllowed = (value, type) => {
         switch (type){
           case 'name':
@@ -44,7 +43,6 @@ export const BannerEditModal = ({payload,setEditBanner,setPayload,bannerFunction
         }
       }
     setPayload(form);
-    console.log(form, 'form')
   return (
     <>
     <div className="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>

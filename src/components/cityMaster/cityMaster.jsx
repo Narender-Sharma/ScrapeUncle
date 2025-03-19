@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import {EditCity,Alert, Loader} from '../share'
+import {EditCity, Alert, Loader} from '../share'
 import { addNewCity,cityUpdate } from '../../services/cityMaster';
 import { DashboardTop } from './../dashboardTop';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';

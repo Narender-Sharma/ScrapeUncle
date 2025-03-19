@@ -8,7 +8,7 @@ import { Loader } from '../components/share';
 export default function AddBanner () {
   const [allBanner, setAllBanner] = useState([]);
   const [bannerUpd, setBannerUpd] = useState([]);
-
+  const [loader, serLoader] = useState(true)
   const userAdminLogin = getItemFromCookie('userAdminLogin');
   const userEmail = getItemFromCookie('userEmail');
   const userMobile = getItemFromCookie('mobile');
@@ -37,12 +37,13 @@ export default function AddBanner () {
         let GetBanner = await getAddBanner(userAdminLogin);
         if(GetBanner.success === 1){
           setAllBanner(GetBanner.data)
+          serLoader(false)
         }else{
           userLogout();
         }
     }
   } 
   return (
-    allBanner.length > 0 ? <HomePageBanner allBanner={allBanner} setBannerUpd={setBannerUpd} bannerUpd={bannerUpd} setAllBanner={setAllBanner}/>:<Loader/>
+    loader ?<Loader/>: <HomePageBanner allBanner={allBanner} setBannerUpd={setBannerUpd} bannerUpd={bannerUpd} setAllBanner={setAllBanner}/>
   )
 }

@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
 import Validation from '../../../form/Validation';
 
-import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../../helpers/cookie';
-export const EditMeasurement = ({setEditBanner,addCity,setPayload,payload,upDateCity,addLebal}) => {
+export const EditMeasurement = ({setEditBanner,addWeight,setPayload,payload,upDateWeight,addLebal}) => {
+    console.log(addLebal, 'addLebal')
     let editBanner = {
         name:'',
         is_active:'',
@@ -36,18 +36,18 @@ export const EditMeasurement = ({setEditBanner,addCity,setPayload,payload,upDate
         <div className="modal-dialog modal-lg">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h6 className="modal-title mt-0" id="myLargeModalLabel">{addLebal === true?'Add New':'Update'} Measurement</h6>
+                    <h6 className="modal-title mt-0" id="myLargeModalLabel">{addLebal === true?'Add New':'Update'} Weight</h6>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={()=>setEditBanner(false)}></button>
                 </div>
                 <div className="modal-body">
                     <form>
                         <div className="row">
                             <div className="col-md-6">
-                                <label className="form-label" htmlFor="LeadName">City Name</label>
+                                <label className="form-label" htmlFor="LeadName">Weight Name</label>
                                 <input type="text" className="form-control" id="LeadName" name='name' value={form.name} required="" onChange={(e)=>HandleChange(e)}/>
                             </div>
                             <div className="col-md-6">
-                                <label className="form-label mt-2" htmlFor="PhoneNo">City Status</label><br/>
+                                <label className="form-label mt-2" htmlFor="PhoneNo">Weight Status</label><br/>
                                 <div className="form-check form-check-inline">
                                     <input className="form-check-input" type="radio" name="is_active" id="inlineRadio1" checked={form.is_active ==1?true:false} value="1" onChange={(e)=>HandleChange(e)}/>
                                     <label className="form-check-label" htmlFor="inlineRadio1">Active</label>
@@ -58,7 +58,7 @@ export const EditMeasurement = ({setEditBanner,addCity,setPayload,payload,upDate
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="btn btn-sm btn-primary mt-2" onClick={()=>addLebal === true?addCity():upDateCity()}>Save</button>  
+                        <button type="button" className="btn btn-sm btn-primary mt-2" onClick={()=>addLebal === true?addWeight():upDateWeight()}>Save</button>  
                         {/* <button type="button" className="btn btn-sm btn-danger mt-2">Delete</button>              */}
                     </form>  
                 </div>

@@ -3,6 +3,7 @@ import Validation from '../../../form/Validation';
 
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../../helpers/cookie';
 export const EditCity = ({setEditBanner,addCity,setPayload,payload,upDateCity,addLebal}) => {
+    console.log(addLebal, 'addLebal')
     let editBanner = {
         name:'',
         is_active:'',
@@ -34,7 +35,7 @@ export const EditCity = ({setEditBanner,addCity,setPayload,payload,upDateCity,ad
         <div className="modal-dialog modal-lg">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h6 className="modal-title mt-0" id="myLargeModalLabel">{payload?'Update':'Add New'} City</h6>
+                    <h6 className="modal-title mt-0" id="myLargeModalLabel">{addLebal === true?'Add New' :'Update'} City</h6>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={()=>setEditBanner(false)}></button>
                 </div>
                 <div className="modal-body">
