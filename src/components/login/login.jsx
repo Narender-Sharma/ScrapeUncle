@@ -36,7 +36,7 @@ export const Login = () => {
         const { name, value } = e.target;
         let isValid = isAllowed(value, name);
         if (isValid) {
-            console.log(name, value)
+            
             setOTPText(value );
         }
       };

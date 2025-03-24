@@ -1,9 +1,6 @@
 import React,{useState} from 'react'
 import Validation from '../../../form/Validation';
-
-import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../../helpers/cookie';
 export const EditCity = ({setEditBanner,addCity,setPayload,payload,upDateCity,addLebal}) => {
-    console.log(addLebal, 'addLebal')
     let editBanner = {
         name:'',
         is_active:'',

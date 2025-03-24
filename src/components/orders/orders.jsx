@@ -62,7 +62,7 @@ export const Orders = ({userDetails,allUserDetails}) => {
             }
         }
     }
-    console.log(payload, 'payload')
+    
   return (
     <>
         {loader && <Loader/>}
