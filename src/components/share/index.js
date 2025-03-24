@@ -7,3 +7,4 @@ export * from './editMeasurement';
 export * from './wasteCategoryModal';
 export * from './Loader';
 export * from './orderModal';
+export * from './userDelete';

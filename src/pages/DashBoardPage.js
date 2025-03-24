@@ -8,13 +8,14 @@ import { Loader } from '../components/share';
 export default function DashBoardPage(){
     const [userDetails, setUserDetails] = useState('');
     const [allUserDetails, setAllUserDetails] = useState('');
+    const [Api, setApi] = useState(false);
     const userAdminLogin = getItemFromCookie('userAdminLogin');
     const userEmail = getItemFromCookie('userEmail');
     const userMobile = getItemFromCookie('mobile');
     const navigate = useNavigate();
   useEffect(() => {
     getUserData()
-  }, []);
+  }, [Api]);
   const userLogout = async () =>{
     if(userMobile !== undefined || userEmail !== undefined){
       let logout = await adminLogOut(userMobile != undefined?userMobile:userEmail);
@@ -45,6 +46,6 @@ export default function DashBoardPage(){
     }
   } 
   return (
-    allUserDetails.length > 0? <DashBoard userDetails={userDetails} allUserDetails={allUserDetails}/>:<Loader/>
+    allUserDetails.length > 0? <DashBoard setApi={setApi} userAdminLogin={userAdminLogin} userDetails={userDetails} allUserDetails={allUserDetails}/>:<Loader/>
   )
 }

@@ -32,7 +32,7 @@ export const EditMeasurement = ({setEditBanner,addWeight,setPayload,payload,upDa
       setPayload(form)
   return (
    <>
-    <div className="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
+    <div className="modal fade bs-example-modal-lg show" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
         <div className="modal-dialog modal-lg">
             <div className="modal-content">
                 <div className="modal-header">

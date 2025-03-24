@@ -17,7 +17,7 @@ export const Orders = ({userDetails,allUserDetails}) => {
     const [weightList, setWeightList] = useState([]);
     const userAdminLogin = getItemFromCookie('userAdminLogin');
      let message='';
-    let showClass='';
+    let showclassName='';
     const editOrders = async(id)=>{
         setLoader(true);
         let GetWeight = await getMeasurementMaster(userAdminLogin);
@@ -47,7 +47,7 @@ export const Orders = ({userDetails,allUserDetails}) => {
             let data = await OrdersUpdate(userAdminLogin,NewPyload,payload.id);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Update City.';
-                showClass= 'alert-success fade show';
+                showclassName= 'alert-success fade show';
                 setLoader(false);
                 setOrderModel(false);
                 setShowAlert(true);
@@ -56,8 +56,8 @@ export const Orders = ({userDetails,allUserDetails}) => {
             }if(data.success === '0'){
                 setLoader(false)
                 setShowAlert(true);
-                message = message.sqlMessage;
-                showClass= 'alert-danger fade show';
+                message = data.sqlMessage;
+                showclassName= 'alert-danger fade show';
                 
             }
         }
@@ -93,15 +93,15 @@ export const Orders = ({userDetails,allUserDetails}) => {
                                 <div className="card-header">
                                     <div className="row align-items-center">
                                         <div className="col">                      
-                                            <h4 className="card-title">All User</h4>                      
+                                            <h4 className="card-title">All Orders</h4>                      
                                         </div>
                                         <div className="col-auto"> 
-                                            <a href="#" className="text-primary">View All</a>   
+                                            {/* <a href="#" className="text-primary">View All</a>    */}
                                         </div>
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                    {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showClass={'alert-success fade show'}/>}
+                                    {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showclassName={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">

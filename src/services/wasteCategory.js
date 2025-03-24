@@ -1,11 +1,27 @@
 import { httpClient } from "../helpers/http-client";
 
-const getCategory = async(token) => {
+const getAllCategory = async(token) => {
     let headers = {
         Authorization:`Bearer ${token}`,
     }
     try {
         const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/category/all`,
+            {
+                headers
+            }
+        );
+    
+       return response.data;
+    } catch (err) {
+        console.error('error in getAllCategory APi ', err);
+    }
+}
+const getCategory = async(token) => {
+    let headers = {
+        Authorization:`Bearer ${token}`,
+    }
+    try {
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/category`,
             {
                 headers
             }
@@ -51,6 +67,7 @@ const categoryUpdate = async(token,data) =>{
     }
 }
 export{
+    getAllCategory,
     getCategory,
     addCategory,
     categoryUpdate

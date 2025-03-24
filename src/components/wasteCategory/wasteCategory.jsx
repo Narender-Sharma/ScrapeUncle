@@ -3,8 +3,8 @@ import { DashboardTop } from './../dashboardTop';
 import { Alert, WasteCategoryModel,Loader} from '../share';
 import { getItemFromCookie } from '../../helpers/cookie';
 import {getMeasurementMaster} from './../../services/measurementMaster';
-import {getCategory,addCategory,categoryUpdate} from './../../services/wasteCategory';
-export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCategoryUpd,wasteCategory,setWasteCategory}) => {
+import {getCategory,addCategory,categoryUpdate,getAllCategory} from './../../services/wasteCategory';
+export const WasteCategoryCom = ({mainCategory,userAdminLogin,wasteCategoryUpd,setWasteCategoryUpd,wasteCategory,setWasteCategory}) => {
   const [showAlert, setShowAlert] = useState(false);
   const [payload, setPayload] = useState('');
   const [addLebal, setaddLebal] = useState(true);
@@ -30,13 +30,6 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
   const addWasteCategory = async ()=>{
     setaddLebal(true);
     setLoader(true);
-    // const payFormat = new FormData();
-    //     payFormat.append("file", payload.image);
-    //     payFormat.append("name", payload.name);
-    //     payFormat.append("label", payload.label);
-    //     payFormat.append("weight_id", payload.weight);
-    //     // payFormat.append("is_active", payload.is_active);
-    //     payFormat.append("parent_id", "0");
     let data = await addCategory(userAdminLogin,payload);
     if(data.success === 1){
         message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
@@ -87,7 +80,7 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
   return (
     <>
     {loader && <Loader/>}
-    {editBanner && <WasteCategoryModel meashuMaster={meashuMaster} bannerFunction={addLebal === true?addWasteCategory:UpdateWasteCategory} setEditBanner={setEditBanner} setPayload={setPayload} payload={payload}/> }
+    {editBanner && <WasteCategoryModel meashuMaster={meashuMaster} mainCategory={ mainCategory } bannerFunction={addLebal === true?addWasteCategory:UpdateWasteCategory} setEditBanner={setEditBanner} setPayload={setPayload} payload={payload}/> }
       <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
@@ -123,7 +116,7 @@ export const WasteCategoryCom = ({userAdminLogin,wasteCategoryUpd,setWasteCatego
                                 {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
-                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add New Measurement</button>
+                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add New Category</button>
                                         </div>
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">

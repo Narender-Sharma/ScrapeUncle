@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react'
 import { WasteCategoryCom } from '../components/wasteCategory'
-import {getCategory} from './../services/wasteCategory';
+import {getCategory,getAllCategory} from './../services/wasteCategory';
 import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../helpers/cookie';
 import { useNavigate } from "react-router-dom";
 import { adminLogOut } from '../services/userServices'
@@ -8,6 +8,7 @@ import { Loader } from '../components/share';
 export default function WasteCategory(){
     const [wasteCategoryUpd, setWasteCategoryUpd] = useState([]);
     const [wasteCategory, setWasteCategory] = useState(true);
+    const [mainCategory, setMainCategory] = useState(true);
     const userAdminLogin = getItemFromCookie('userAdminLogin');
     const userEmail = getItemFromCookie('userEmail');
     const userMobile = getItemFromCookie('mobile');
@@ -34,8 +35,10 @@ export default function WasteCategory(){
             navigate('/login');
            }else if(userAdminLogin !=''){
             let GetCategory = await getCategory(userAdminLogin);
+            let allCategory = await getAllCategory();
             if(GetCategory.success === 1){
-                setWasteCategory(GetCategory.data)
+                setWasteCategory(GetCategory.data);
+                setMainCategory(allCategory.data);
             }else{
               userLogout()
             }
@@ -43,7 +46,7 @@ export default function WasteCategory(){
       } 
   return (
     <>
-        {wasteCategory && wasteCategory.length > 0 ?  <WasteCategoryCom userAdminLogin={userAdminLogin} setWasteCategoryUpd={setWasteCategoryUpd} wasteCategoryUpd={wasteCategoryUpd} wasteCategory={wasteCategory}/>:<Loader/>}
+        {wasteCategory && wasteCategory.length > 0 ?  <WasteCategoryCom mainCategory={mainCategory} userAdminLogin={userAdminLogin} setWasteCategoryUpd={setWasteCategoryUpd} wasteCategoryUpd={wasteCategoryUpd} wasteCategory={wasteCategory}/>:<Loader/>}
     </>
   )
 }

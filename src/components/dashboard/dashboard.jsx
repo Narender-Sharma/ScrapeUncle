@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import Validation from '../../form/Validation';
-import { getItemFromCookie,setItemInCookie,removeItemInCookie } from '../../helpers/cookie';
-import { decrypt_object } from "../../helpers/Base64Encode";
-import { adminLogin,adminGetUser } from '../../services/userServices';
+import {Alert, Loader,UserDelete} from '../share'
 import { DashboardTop } from '../dashboardTop';
-export const DashBoard = ({userDetails,allUserDetails}) => {   
+export const DashBoard = ({setApi,userAdminLogin,userDetails,allUserDetails}) => {   
+    const [loader, setLoader] = useState(false);
+    const [deleteModel, setDeleteModel] = useState(false);
+    const [payLoad, setPayLoad] = useState([]);
+    let message='';
+    let showclassName='';
+    const editUser =(id)=>{
+        // setLoader(true);
+        setDeleteModel(true);
+        let currentOrder = allUserDetails.filter((item)=>item.id === id);
+        setPayLoad(currentOrder[0])
+    }
   return (
-    <div className="page-wrapper">
+   <>
+   {loader && <Loader/>}
+   {deleteModel && <UserDelete setApi={setApi} userAdminLogin={userAdminLogin} setDeleteModel={setDeleteModel} setLoader={setLoader} loader={loader} deleteModel={deleteModel} payLoad={payLoad} setPayLoad={setPayLoad} message={message} showclassName={showclassName}/>}
+     <div className="page-wrapper">
             <div className="page-content-tab">
                 <div className="container-fluid">
                     <div className="row">
@@ -51,6 +61,7 @@ export const DashBoard = ({userDetails,allUserDetails}) => {
                                                     <th>City</th>
                                                     <th>Gender</th>
                                                     <th>User Type</th>
+                                                    <th>Delete User</th>
                                                 </tr>
                                             </thead>
 
@@ -63,6 +74,7 @@ export const DashBoard = ({userDetails,allUserDetails}) => {
                                                         <td>{item.city}</td>
                                                         <td>{item.gender}</td>
                                                         <td>{item.userType}</td>
+                                                        <td><a className='' onClick={()=>editUser(item.id)} href='javascript:void(0)'><i className='far fa-edit'></i></a></td>
                                                     </tr>
                                                 ))}                                                                                              
                                             </tbody>
@@ -116,5 +128,6 @@ export const DashBoard = ({userDetails,allUserDetails}) => {
                 </div>
             </div>
         </div>
+   </>
   )
 }

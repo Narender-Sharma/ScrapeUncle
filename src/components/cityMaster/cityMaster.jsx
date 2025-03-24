@@ -10,7 +10,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
     const [addLebal, setaddLebal] = useState(true);
     const [loader, setLoader] = useState(false)
     let message='';
-    let showClass='';
+    let showclassName='';
     const userAdminLogin = getItemFromCookie('userAdminLogin');
     useEffect(() => {
         const timeId = setTimeout(() => {
@@ -35,7 +35,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
             let data = await addNewCity(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Add City.';
-                showClass= 'alert-success fade show';
+                showclassName= 'alert-success fade show';
                 setShowAlert(true);
                 setCityModel(false)
                 setLoader(false)
@@ -55,7 +55,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
             let data = await cityUpdate(userAdminLogin,payload);
             if(data.success === 1){
                 message = '<strong>Well done!</strong> 👍 You successfully Update City.';
-                showClass= 'alert-success fade show';
+                showclassName= 'alert-success fade show';
                 setLoader(false)
                 setShowAlert(true);
                 setCityModel(false);
@@ -65,7 +65,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
                 setLoader(false)
                 setShowAlert(true);
                 message = message.sqlMessage;
-                showClass= 'alert-danger fade show';
+                showclassName= 'alert-danger fade show';
                 setCityModel(false)
             }
         }
@@ -108,7 +108,7 @@ export const CityMaster = ({cityList,setCityUpd,cityUpd}) => {
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showClass={'alert-success fade show'}/>}
+                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={message} showclassName={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
                                             <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addCityFunction()}>Add New City</button>

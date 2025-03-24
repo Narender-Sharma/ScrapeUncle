@@ -147,9 +147,9 @@ export const Login = () => {
                                             <p className="text-muted  mb-0">Sign in to continue to Metrica.</p>  
                                         </div>
                                     </div>
-                                    <div class="btn-group filter-options">
-                                        <button class="btn btn-primary active" onClick={()=>setLoginWith('email')}>Login with E-mail</button>
-                                        <button class="btn btn-primary" onClick={()=>setLoginWith('mobile')}>Login with Mobile</button>
+                                    <div className="btn-group filter-options">
+                                        <button className="btn btn-primary active" onClick={()=>setLoginWith('email')}>Login with E-mail</button>
+                                        <button className="btn btn-primary" onClick={()=>setLoginWith('mobile')}>Login with Mobile</button>
                                     </div>
                                     <div className="card-body pt-0">                                    
                                         <form className="my-4" action="index.html">            

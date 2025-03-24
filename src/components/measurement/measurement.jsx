@@ -10,7 +10,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
   const [addLebal, setaddLebal] = useState(true);
   const [loader, setLoader] = useState(false);
   let message='';
-  let showClass='';
+  let showclassName='';
   const userAdminLogin = getItemFromCookie('userAdminLogin');
   useEffect(() => {
       const timeId = setTimeout(() => {
@@ -36,7 +36,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
           let data = await addNewMeasurement(userAdminLogin,payload);
           if(data.success === 1){
               message = '<strong>Well done!</strong> 👍 You successfully Add Measurement.';
-              showClass= 'alert-success fade show';
+              showclassName= 'alert-success fade show';
               setShowAlert(true);
               setWeightModel(false);
               setLoader(false);
@@ -56,7 +56,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
           let data = await measurementUpdate(userAdminLogin,payload);
           if(data.success === 1){
               message = '<strong>Well done!</strong> 👍 You successfully Update Measurement.';
-              showClass= 'alert-success fade show';
+              showclassName= 'alert-success fade show';
               setLoader(false);
               setShowAlert(true);
               setWeightModel(false);
@@ -66,7 +66,7 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
               setShowAlert(true);
               setLoader(false);
               message = message.sqlMessage;
-              showClass= 'alert-danger fade show';
+              showclassName= 'alert-danger fade show';
               setWeightModel(false)
           }
           
@@ -108,18 +108,18 @@ export const Measurement = ({weightList,measureMentUpd,setMeasureMentUpd}) => {
                                 <div className="card-header">
                                     <div className="row align-items-center">
                                         <div className="col">                      
-                                            <h4 className="card-title">All User</h4>                      
+                                            <h4 className="card-title">All Weight Manage</h4>                      
                                         </div>
                                         <div className="col-auto"> 
-                                            <a href="#" className="text-primary">View All</a>   
+                                            {/* <a href="#" className="text-primary">View All</a>    */}
                                         </div>
                                     </div>                                   
                                 </div>                                
                                 <div className="card-body">
-                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showClass={'alert-success fade show'}/>}
+                                {showAlert && <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={'<strong>Well done!</strong> 👍 You successfully Add City.'} showclassName={'alert-success fade show'}/>}
                                     <div className="table-responsive">
                                         <div className="mb-2">
-                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add New Measurement</button>
+                                            <button className="btn btn-outline-primary btn-sm mb-1 mb-xl-0" id="reactivity-add" onClick={()=>addMeasurementFunction()}>Add Weight</button>
                                         </div>
                                         <table className="table table-hover mb-0">
                                             <thead className="thead-light">

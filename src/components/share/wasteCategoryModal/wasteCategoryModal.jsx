@@ -1,12 +1,11 @@
 import React, { useState,useRef } from 'react'
 import Validation from '../../../form/Validation';
-import imageCompression from "browser-image-compression";
-export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPayload,bannerFunction}) => {
+export const WasteCategoryModel = ({message,showClass, mainCategory,meashuMaster, payload,setEditBanner,setPayload,bannerFunction}) => {
     console.log(payload, 'payload')
     let editBanner = {
         name:'',
         label:'',
-        is_active:true,
+        is_active:1,
         image:'',
         parent_id:'0',
         weight_id:'0'
@@ -19,8 +18,8 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
        if(name === 'image' && e.target.files){
         const uploadedFile = fileUploadRef.current.files[0];
         if(uploadedFile.size > 512000){
-            // message = '<strong>&#x2718;</strong> 👍 File is too big'
-            // showClass = 'alert alert-danger fade show'
+            message = '<strong>&#x2718;</strong> 👍 File is too big'
+            showClass = 'alert alert-danger fade show'
             alert("File is too big!");
             setForm({...form, image:''})
             return
@@ -51,7 +50,7 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
     setPayload(form);
   return (
     <>
-    <div className="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
+    <div className="modal fade bs-example-modal-lg show" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
         <div className="modal-dialog modal-lg">
             <div className="modal-content">
                 <div className="modal-header">
@@ -69,6 +68,17 @@ export const WasteCategoryModel = ({meashuMaster, payload,setEditBanner,setPaylo
                                 <div className="col-md-12">
                                     <label className="form-label mt-2 mt-md-0" htmlFor="label">label</label>
                                     <input type="text" className="form-control" id="label" name='label' disabled={false} value={form.label} required="" onChange={(e)=>HandleChange(e)}/>
+                                </div>
+                                <div className="col-md-12">
+                                    <label className="form-label mt-2 mt-md-0" htmlFor="parent_id">Parent Category</label>
+                                    <select className='form-select' name='parent_id' id='parent_id' onChange={(e)=>HandleChange(e)}>
+                                        <option>Select</option>
+                                        {
+                                            mainCategory.map((item,id)=>(
+                                                item.parent_id === 0 &&  <option key={id} value={item.id} selected = {form.parent_id === item.id ?'selected':''}>{item.name}</option>
+                                            ))
+                                        }
+                                    </select>
                                 </div>
                                 <div className="col-md-12">
                                     <label className="form-label mt-2 mt-md-0" htmlFor="weight_id">Measurement Manage</label>

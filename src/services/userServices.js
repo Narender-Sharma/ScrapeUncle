@@ -40,12 +40,28 @@ const adminGetUser = async(token) => {
     
        return response.data;
     } catch (err) {
-        console.error('error in adminLogin APi ', err);
+        console.error('error in adminGetUser APi ', err);
+    }
+}
+const deleteUser = async(token,id) => {
+    let headers = {
+        Authorization:`Bearer ${token}`,
+    }
+    try {
+        const response = await httpClient.get(process.env.REACT_APP_BASE_URL_API+`/api/users/${id}`,
+            {
+                headers
+            }
+        );
+    
+       return response.data;
+    } catch (err) {
+        console.error('error in adminGetUser APi ', err);
     }
 }
 
 export {
     adminLogin,
     adminGetUser,
-    LoginOtpVerify,adminLogOut
+    LoginOtpVerify,adminLogOut,deleteUser
 }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Validation from '../../../form/Validation';
 export const OrderModal = ({OrderUpdate,setPayload,payload,orderModel,setOrderModel,weightList}) => {
-    console.log(weightList, 'weightList')
+    console.log(payload, 'payload')
     const [form, setForm] = useState(payload);
     const [errorMsg, setErrorMsg] = useState('');
     const HandleChange = (e)=>{
@@ -28,7 +28,7 @@ export const OrderModal = ({OrderUpdate,setPayload,payload,orderModel,setOrderMo
       console.log(form, 'form')
   return (
     <>
-        <div className="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
+        <div className="modal fade bs-example-modal-lg show" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-modal="true" style={{display: 'block'}}>
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -67,11 +67,11 @@ export const OrderModal = ({OrderUpdate,setPayload,payload,orderModel,setOrderMo
                                 </div>
                                 <div className="col-md-6">
                                     <label className="form-label mt-2" htmlFor="date">Date</label>
-                                    <input type="date" class="form-control datepicker-input" id='date'  name="date" min={Today} value={form.date} onChange={(e)=>HandleChange(e)}/>
+                                    <input type="date" className="form-control datepicker-input" id='date'  name="date" min={Today} value={new Date(form.date).toISOString().split("T")[0]} onChange={(e)=>HandleChange(e)}/>
                                 </div>
                                 <div className="col-md-6">
                                     <label className="form-label mt-2" htmlFor="time">Time</label>
-                                    <input type="time" class="form-control datepicker-input" id='time'  name="time" min={Today} value={form.time} onChange={(e)=>HandleChange(e)}/>
+                                    <input type="time" className="form-control datepicker-input" id='time'  name="time" min={Today} value={form.time} onChange={(e)=>HandleChange(e)}/>
                                 </div>
                                 {weightList.length > 0 && <div className="col-md-6">
                                     <label className="form-label mt-2" htmlFor="weightId">Weight Type</label>
@@ -93,7 +93,7 @@ export const OrderModal = ({OrderUpdate,setPayload,payload,orderModel,setOrderMo
                                 </div>
                                 <div className="col-md-6">
                                     <label className="form-label mt-2" htmlFor="address_type">Address Type</label>
-                                    <input type="text" class="form-control" id='address_type'  name="address_type" value={form.address_type} disabled={true}/>
+                                    <input type="text" className="form-control" id='address_type'  name="address_type" value={form.address_type} disabled={true}/>
                                 </div>
                                 <div className="col-md-6">
                                     <label className="form-label mt-2" htmlFor="message">Message</label>
@@ -107,7 +107,7 @@ export const OrderModal = ({OrderUpdate,setPayload,payload,orderModel,setOrderMo
                                         <label className="form-check-label" htmlFor="inlineRadio1">Active</label>
                                     </div>
                                     <div className="form-check form-check-inline">
-                                        <input className="form-check-input" type="radio" name="cityId" id="inlineRadio2" checked={form.cityId ==0?true:false} value="0" onChange={(e)=>HandleChange(e)}/>
+                                        <input className="form-check-input" type="radio" name="is_active" id="inlineRadio2" checked={form.is_active ==0?true:false} value="0" onChange={(e)=>HandleChange(e)}/>
                                         <label className="form-check-label" htmlFor="inlineRadio2">in Active</label>
                                     </div>
                                 </div>
